@@ -14,6 +14,12 @@ function App() {
 
     const [isConnected, setIsConnected] = useState(socket.connected);
     const [questions, setQuestions] = useState([]);
+    const [lesson, setLesson] = useState({});
+
+    const getLessonHandler = async (id) => {
+        const res = await getLesson(id);
+        setLesson(res);
+    }
 
     useEffect(() => {
         const onConnect = () => {
@@ -42,7 +48,6 @@ function App() {
             socket.off('disconnect', onDisconnect);
             socket.off('new_question', onQuestion);
             socket.off('teacher_question', teacherQuestion);
-
         };
     }, [socket]);
 

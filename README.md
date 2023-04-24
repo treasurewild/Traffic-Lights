@@ -8,3 +8,4 @@ This app uses the following technologies:
 * Node.js
 * Express
 * Socket.io
+* https://shortunique.id/
