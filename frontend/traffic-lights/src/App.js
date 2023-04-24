@@ -25,23 +25,31 @@ function App() {
         };
 
         const onQuestion = question => {
+            setQuestions(previous => [question, ...previous]);;
+        }
+
+        const teacherQuestion = question => {
             setQuestions(previous => [question, ...previous])
         }
 
         socket.on('connect', onConnect);
         socket.on('disconnect', onDisconnect);
         socket.on('new_question', onQuestion);
+        socket.on('teacher_question', teacherQuestion);
 
         return () => {
             socket.off('connect', onConnect);
             socket.off('disconnect', onDisconnect);
             socket.off('new_question', onQuestion);
+            socket.off('teacher_question', teacherQuestion);
+
         };
     }, [socket]);
 
     return (
         <div>
             <Header />
+            <h1>Welcome to Traffic Lights</h1>
             <ConnectionState isConnected={isConnected} />
             <Routes>
                 <Route path='/' element={<Homepage />} />

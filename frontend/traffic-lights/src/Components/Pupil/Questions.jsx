@@ -4,11 +4,16 @@ import Question from './Question.jsx';
 const Questions = ({ questions }) => {
 
     const displayQuestions = () => {
-        console.log(questions)
-        const display = questions.map((question, index) => {
-            return <Question key={index} question={question} />
-        });
-        return display;
+        if (questions.length > 0) {
+            const display = questions.map((question, index) => {
+                return (
+                    <div key={index}>
+                        <Question question={question} />
+                    </div>)
+            });
+            return display;
+        }
+        return <p className='text-muted'>No questions have been asked.</p>
     }
 
     return (

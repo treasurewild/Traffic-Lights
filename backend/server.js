@@ -23,6 +23,7 @@ io.on('connection', socket => {
     socket.on('ask_question', question => {
         const newQuestion = { _id: question._id, text: question.text }
         socket.broadcast.emit('new_question', newQuestion);
+        socket.emit('teacher_question', question);
     })
 
 });

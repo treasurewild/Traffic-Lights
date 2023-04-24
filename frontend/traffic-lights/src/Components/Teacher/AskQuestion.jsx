@@ -13,7 +13,7 @@ const AskQuestion = () => {
 
         const question = new QuestionModel(text);
 
-        socket.timeout(5000).emit('ask_question', question, () => {
+        socket.timeout(1000).emit('ask_question', question, () => {
             setIsLoading(false);
         });
 
