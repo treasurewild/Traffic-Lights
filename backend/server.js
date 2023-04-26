@@ -79,7 +79,16 @@ io.on('connection', socket => {
                 responses: data.response
             }
         }, { new: true });
-    })
+    });
+
+    socket.on('pupil_response_reset', async data => {
+        const question = await Question.findOne({ shortId: data.shortId });
+
+        const index = question.responses.indexOf(data.response);
+        question.responses.splice(index, 1);
+
+        question.save();
+    });
 
 });
 

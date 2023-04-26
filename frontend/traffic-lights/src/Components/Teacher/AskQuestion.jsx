@@ -13,9 +13,10 @@ const AskQuestion = ({ shortId }) => {
 
         const question = new QuestionModel(text);
 
+        // Asks question and allows time for responses before fetching lesson data.
         socket.timeout(10000).emit('ask_question', { question: question }, () => {
             setIsLoading(false);
-            socket.emit('fetch_lesson', shortId)
+            socket.emit('fetch_lesson', shortId);
         });
 
         setText('');

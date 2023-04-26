@@ -19,6 +19,11 @@ const Question = ({ question }) => {
             return <Button type='button' variant='danger'>Red</Button>
     }
 
+    const resetResponse = () => {
+        socket.emit('pupil_response_reset', { response: response, shortId: question.shortId });
+        setResponse('');
+    }
+
     return (
         <div className='m-1 p-2 bg-dark text-light'>
             <h5 className='p-2'>{question.text} </h5>
@@ -31,7 +36,7 @@ const Question = ({ question }) => {
                 :
                 <>
                     {displayResponse()}
-                    <Button className='m-1' variant='secondary' onClick={() => setResponse('')} >Reset</Button>
+                    <Button className='m-1' variant='secondary' onClick={resetResponse} >Reset</Button>
                 </>
             }
         </div >

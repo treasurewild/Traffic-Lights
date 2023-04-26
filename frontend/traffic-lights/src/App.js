@@ -52,7 +52,7 @@ function App() {
             <Header />
             <Routes>
                 <Route path='/' element={<Homepage socket={socket} />} />
-                <Route path='/teacher' element={<Teacher isConnected={isConnected} questions={questions} lesson={lesson} setLesson={setLesson} />} />
+                <Route path='/teacher' element={<Teacher isConnected={isConnected} questions={questions} lesson={lesson} />} />
                 <Route path='/pupil' element={<Pupil isConnected={isConnected} lesson={lesson} />} />
             </Routes>
             <Footer />
