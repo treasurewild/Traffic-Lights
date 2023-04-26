@@ -1,11 +1,11 @@
-import React from 'react'
+import React from 'react';
 
-const ConnectionState = ({ isConnected }) => {
+const ConnectionState = ({ isConnected, shortId }) => {
     return (
         <>
             {isConnected ?
                 <p>
-                    Connected: {isConnected}
+                    Connected to lesson: {shortId}
                 </p>
                 :
                 <p>Not connected.</p>

@@ -3,7 +3,7 @@ import React from 'react'
 const Responses = ({ responses }) => {
 
     const displayResponses = () => {
-        const display = responses.map((response, index) => {
+        const display = responses?.map((response, index) => {
             if (response === '3red')
                 return <div key={index} className='bg-danger bar'></div>;
 
@@ -12,9 +12,10 @@ const Responses = ({ responses }) => {
 
             if (response === '1green')
                 return <div key={index} className='bg-success bar'></div>;
-        })
 
-        return display;
+            return <div key='na'></div>
+        });
+        return display?.length > 0 ? display : <p className='text-muted'>No responses yet.</p>;
     }
 
     return (

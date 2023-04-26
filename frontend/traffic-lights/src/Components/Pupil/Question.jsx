@@ -1,52 +1,40 @@
 import React, { useState } from 'react';
-import { ButtonGroup, ToggleButton } from 'react-bootstrap';
+import { Button } from 'react-bootstrap';
+import { socket } from '../../socket';
 
-const Question = ({ key, question }) => {
+const Question = ({ question }) => {
+    const [response, setResponse] = useState('');
 
-    const [radioValue, setRadioValue] = useState('1');
+    const sendResponse = (event) => {
+        setResponse(event.target.value);
+        socket.emit('pupil_response', { response: event.target.value, shortId: question.shortId });
+    }
+
+    const displayResponse = () => {
+        if (response === '1green')
+            return <Button type='button' variant='success'>Green</Button>
+        if (response === '2amber')
+            return <Button type='button' variant='warning'>Amber</Button>
+        if (response === '3red')
+            return <Button type='button' variant='danger'>Red</Button>
+    }
 
     return (
-        <>
-            <div className='m-1 p-2 bg-dark text-light'>
-                <h5 className='p-2'>{question.text}</h5>
-
-                <ButtonGroup>
-                    <ToggleButton
-                        id='green'
-                        type="radio"
-                        variant='outline-success'
-                        name="radio"
-                        value='1'
-                        checked={radioValue === '1'}
-                        onChange={(e) => setRadioValue(e.currentTarget.value)}
-                    >
-                        Green
-                    </ToggleButton>
-                    <ToggleButton
-                        id='amber'
-                        type="radio"
-                        variant='outline-warning'
-                        name="radio"
-                        value='2'
-                        checked={radioValue === '2'}
-                        onChange={(e) => setRadioValue(e.currentTarget.value)}
-                    >
-                        Amber
-                    </ToggleButton>
-                    <ToggleButton
-                        id='red'
-                        type="radio"
-                        variant='outline-danger'
-                        name="radio"
-                        value='3'
-                        checked={radioValue === '3'}
-                        onChange={(e) => setRadioValue(e.currentTarget.value)}
-                    >
-                        Red
-                    </ToggleButton>
-                </ButtonGroup>
-            </div>
-        </>
+        <div className='m-1 p-2 bg-dark text-light'>
+            <h5 className='p-2'>{question.text} </h5>
+            {response == '' ?
+                <>
+                    <Button className='m-1' variant='success' value='1green' onClick={sendResponse} >Green</Button>
+                    <Button className='m-1' variant='warning' value='2amber' onClick={sendResponse} >Amber</Button>
+                    <Button className='m-1' variant='danger' value='3red' onClick={sendResponse} >Red</Button>
+                </>
+                :
+                <>
+                    {displayResponse()}
+                    <Button className='m-1' variant='secondary' onClick={() => setResponse('')} >Reset</Button>
+                </>
+            }
+        </div >
     )
 }
 

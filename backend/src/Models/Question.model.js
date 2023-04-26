@@ -1,10 +1,11 @@
-import mongoose from "mongoose";
+import mongoose from 'mongoose';
 
-const questionSchema = new mongoose.Schema({
-    _id: { type: String, required: true, unique: true },
-    question: String,
-    responses: [{ type: String }]
-});
+const questionSchema = new mongoose.Schema(
+    {
+        shortId: { type: String, required: true, unique: true },
+        text: String,
+        responses: [{ type: String }]
+    });
 
 const Question = mongoose.model('Question', questionSchema);
 

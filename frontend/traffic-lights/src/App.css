@@ -4,6 +4,13 @@
     height: 20px;
 }
 
+.main {
+    margin-top: 4px;
+    margin-left: 4px;
+    margin-right: 4px;
+    margin-bottom: 50px;
+}
+
 .question-box {
     background-color: darkblue;
 }
