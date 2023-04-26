@@ -3,25 +3,26 @@ import { socket } from '../../socket.js';
 import { Button, Form } from 'react-bootstrap';
 import QuestionModel from '../../Utils/QuestionModel.js';
 
-const AskQuestion = () => {
+const AskQuestion = ({ shortId }) => {
     const [text, setText] = useState('');
     const [isLoading, setIsLoading] = useState(false);
 
-    const onSubmit = (event) => {
+    const askQuestion = (event) => {
         event.preventDefault();
         setIsLoading(true);
 
         const question = new QuestionModel(text);
 
-        socket.timeout(1000).emit('ask_question', question, () => {
+        socket.timeout(10000).emit('ask_question', { question: question }, () => {
             setIsLoading(false);
+            socket.emit('fetch_lesson', shortId)
         });
 
         setText('');
     }
 
     return (
-        <Form onSubmit={onSubmit}>
+        <Form onSubmit={askQuestion}>
             <Form.Control
                 type="text"
                 value={text}

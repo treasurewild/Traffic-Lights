@@ -4,7 +4,7 @@ import Question from './Question.jsx';
 const Questions = ({ questions }) => {
 
     const displayQuestions = () => {
-        if (questions.length > 0) {
+        if (questions?.length > 0) {
             const display = questions.map((question, index) => {
                 return (
                     <div key={index}>

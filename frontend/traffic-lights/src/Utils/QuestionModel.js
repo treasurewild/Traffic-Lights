@@ -1,10 +1,11 @@
-import createId from "./createId";
+import ShortUniqueId from 'short-unique-id';
+
+const uid = new ShortUniqueId({ length: 6 });
 
 export default class QuestionModel {
 
     constructor(text) {
         this.text = text;
-        this._id = createId(); // Mongoose ID
-        this.responses = [];
+        this.shortId = uid(); // Short ID to aid Mongo Insert
     }
 }

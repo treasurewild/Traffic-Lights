@@ -2,7 +2,6 @@ import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Routes, Route } from 'react-router-dom';
 import { socket } from './socket.js';
-import ConnectionState from './Sockets/ConnectionState.js';
 import { useState, useEffect } from 'react';
 import Footer from './Components/Page/Footer';
 import Header from './Components/Page/Header';
@@ -15,11 +14,7 @@ function App() {
     const [isConnected, setIsConnected] = useState(socket.connected);
     const [questions, setQuestions] = useState([]);
     const [lesson, setLesson] = useState({});
-
-    const getLessonHandler = async (id) => {
-        const res = await getLesson(id);
-        setLesson(res);
-    }
+    //const [lessonId, setLessonId] = useState('');
 
     useEffect(() => {
         const onConnect = () => {
@@ -30,36 +25,35 @@ function App() {
             setIsConnected(false);
         };
 
-        const onQuestion = question => {
-            setQuestions(previous => [question, ...previous]);;
-        }
-
         const teacherQuestion = question => {
             setQuestions(previous => [question, ...previous])
         }
 
         socket.on('connect', onConnect);
         socket.on('disconnect', onDisconnect);
-        socket.on('new_question', onQuestion);
+        socket.on('new_question', data => setLesson(data));
         socket.on('teacher_question', teacherQuestion);
+        socket.on('joined', data => setLesson(data));
+        socket.on('updated_lesson', data => setLesson(data));
 
         return () => {
             socket.off('connect', onConnect);
             socket.off('disconnect', onDisconnect);
-            socket.off('new_question', onQuestion);
+            socket.off('new_question', data => setLesson(data));
             socket.off('teacher_question', teacherQuestion);
+            socket.off('joined', data => setLesson(data));
+            socket.off('updated_lesson', data => setLesson(data));
+
         };
-    }, [socket]);
+    }, []);
 
     return (
         <div>
             <Header />
-            <h1>Welcome to Traffic Lights</h1>
-            <ConnectionState isConnected={isConnected} />
             <Routes>
-                <Route path='/' element={<Homepage />} />
-                <Route path='/teacher' element={<Teacher questions={questions} />} />
-                <Route path='/pupil' element={<Pupil questions={questions} />} />
+                <Route path='/' element={<Homepage socket={socket} />} />
+                <Route path='/teacher' element={<Teacher isConnected={isConnected} questions={questions} lesson={lesson} setLesson={setLesson} />} />
+                <Route path='/pupil' element={<Pupil isConnected={isConnected} lesson={lesson} />} />
             </Routes>
             <Footer />
         </div>
