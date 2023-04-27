@@ -48,9 +48,8 @@ io.on('connection', socket => {
     });
 
     socket.on('ask_question', async data => {
-
         const newQuestion = await Question.create({ shortId: data.question.shortId, text: data.question.text, responses: [] });
-        const lesson = await Lesson.findOneAndUpdate({ shortId: socket.activeRoom }, {
+        const lesson = await Lesson.findByIdAndUpdate(data._id, {
             $push: {
                 questions: {
                     $each: [newQuestion],
@@ -60,10 +59,8 @@ io.on('connection', socket => {
         }, { new: true })
             .populate('questions');
 
-        // Send question to all pupils
-        socket.to(socket.activeRoom).emit('new_question', lesson);
-        // Send question to Teacher
-        socket.emit('new_question', lesson);
+        // Send question to all except Teacher
+        socket.broadcast.emit('new_question', lesson);
     });
 
     socket.on('fetch_lesson', async shortId => {
@@ -78,8 +75,17 @@ io.on('connection', socket => {
             $push: {
                 responses: data.response
             }
-        }, { new: true });
-    })
+        });
+    });
+
+    socket.on('pupil_response_reset', async data => {
+        const question = await Question.findOne({ shortId: data.shortId });
+
+        const index = question.responses.indexOf(data.response);
+        question.responses.splice(index, 1);
+
+        question.save();
+    });
 
 });
 
