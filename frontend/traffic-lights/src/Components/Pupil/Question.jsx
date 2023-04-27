@@ -3,6 +3,7 @@ import { Button } from 'react-bootstrap';
 import { socket } from '../../socket';
 
 const Question = ({ question }) => {
+
     const [response, setResponse] = useState('');
 
     const sendResponse = (event) => {
@@ -11,6 +12,15 @@ const Question = ({ question }) => {
     }
 
     const displayResponse = () => {
+
+        // const index = question.responses.map(e => e.pupil).indexOf(socket.id);
+
+        // if (index === -1)
+        //     return;
+
+        //console.log(question.responses[index])
+        //setResponse(question.responses[index].response)
+
         if (response === '1green')
             return <Button type='button' variant='success'>Green</Button>
         if (response === '2amber')
@@ -19,15 +29,15 @@ const Question = ({ question }) => {
             return <Button type='button' variant='danger'>Red</Button>
     }
 
-    const resetResponse = () => {
+    const resetResponse = (e) => {
         socket.emit('pupil_response_reset', { response: response, shortId: question.shortId });
-        setResponse('');
+        setResponse(e.target.value);
     }
 
     return (
         <div className='m-1 p-2 bg-dark text-light'>
             <h5 className='p-2'>{question.text} </h5>
-            {response == '' ?
+            {response === '' ?
                 <>
                     <Button className='m-1' variant='success' value='1green' onClick={sendResponse} >Green</Button>
                     <Button className='m-1' variant='warning' value='2amber' onClick={sendResponse} >Amber</Button>

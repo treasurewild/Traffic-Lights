@@ -3,6 +3,9 @@ import React from 'react'
 const Responses = ({ responses }) => {
 
     const displayResponses = () => {
+        // Sort responses to display Red-Amber-Green
+        responses?.sort();
+
         const display = responses?.map((response, index) => {
             if (response === '3red')
                 return <div key={index} className='bg-danger bar'></div>;
