@@ -2,18 +2,16 @@ import express from 'express';
 import http from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
-import Lesson from './src/Models/Lesson.model.js';
+import Lesson from './src/Models/Lesson.model.js'
 import mongoose from 'mongoose';
 import { config } from 'dotenv';
 import Question from './src/Models/Question.model.js';
-// import { teacher } from './src/Routes/Teacher.route.js';
 
 config({ path: `.env.${process.env.NODE_ENV}` })
 
 const port = process.env.PORT;
 const app = express();
 app.use(cors());
-// app.use('/teacher', teacher)
 const server = http.createServer(app);
 
 const io = new Server(server, {
@@ -29,19 +27,42 @@ io.on('connection', socket => {
         console.log(reason);
     });
 
-    // Joining Lesson
-    socket.on('join', async (lessonId) => {
+    // Joining Lesson as a teacher
+    socket.on('join', async (lessonId, callback) => {
         try {
             let result = await Lesson.findOne({ shortId: lessonId })
                 .populate('questions');
 
             if (!result) {
-                result = await Lesson.create({ "shortId": lessonId, questions: [] });
+                result = new Lesson({ shortId: lessonId })
+                result.save();
             }
 
             socket.join(lessonId);
-            socket.emit("joined", result);
             socket.activeRoom = lessonId;
+
+            callback({
+                lesson: result,
+            });
+
+        } catch (e) {
+            console.error(e);
+        }
+    });
+
+    // Joining Lesson as a pupil
+    socket.on('pupil_join', async (lessonId, callback) => {
+        try {
+            let result = await Lesson.findOne({ shortId: lessonId })
+                .populate('questions');
+
+            socket.join(lessonId);
+            socket.activeRoom = lessonId;
+
+            callback({
+                lesson: result,
+            });
+
         } catch (e) {
             console.error(e);
         }
@@ -60,7 +81,7 @@ io.on('connection', socket => {
             .populate('questions');
 
         // Send question to all except Teacher
-        socket.broadcast.emit('new_question', lesson);
+        socket.to(socket.activeRoom).emit('new_question', lesson);
     });
 
     socket.on('fetch_lesson', async shortId => {

@@ -12,9 +12,7 @@ import Teacher from './Components/Teacher/Teacher';
 function App() {
 
     const [isConnected, setIsConnected] = useState(socket.connected);
-    const [questions, setQuestions] = useState([]);
     const [lesson, setLesson] = useState({});
-    //const [lessonId, setLessonId] = useState('');
 
     useEffect(() => {
         const onConnect = () => {
@@ -25,24 +23,20 @@ function App() {
             setIsConnected(false);
         };
 
-        const teacherQuestion = question => {
-            setQuestions(previous => [question, ...previous])
-        }
-
         socket.on('connect', onConnect);
         socket.on('disconnect', onDisconnect);
         socket.on('new_question', data => setLesson(data));
-        socket.on('teacher_question', teacherQuestion);
         socket.on('joined', data => setLesson(data));
         socket.on('updated_lesson', data => setLesson(data));
+        socket.on('error', () => alert('Lesson not found'));
 
         return () => {
             socket.off('connect', onConnect);
             socket.off('disconnect', onDisconnect);
             socket.off('new_question', data => setLesson(data));
-            socket.off('teacher_question', teacherQuestion);
             socket.off('joined', data => setLesson(data));
             socket.off('updated_lesson', data => setLesson(data));
+            socket.off('no_lesson', data => alert(data.message));
 
         };
     }, []);
@@ -51,8 +45,8 @@ function App() {
         <div>
             <Header />
             <Routes>
-                <Route path='/' element={<Homepage socket={socket} />} />
-                <Route path='/teacher' element={<Teacher isConnected={isConnected} questions={questions} lesson={lesson} />} />
+                <Route path='/' element={<Homepage setLesson={setLesson} />} />
+                <Route path='/teacher' element={<Teacher isConnected={isConnected} lesson={lesson} />} />
                 <Route path='/pupil' element={<Pupil isConnected={isConnected} lesson={lesson} />} />
             </Routes>
             <Footer />

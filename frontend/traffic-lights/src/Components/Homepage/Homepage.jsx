@@ -3,24 +3,30 @@ import { Button, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { socket } from '../../socket';
 
-const Homepage = () => {
+const Homepage = ({ setLesson }) => {
 
     const navigate = useNavigate();
     const [pupilLesson, setPupilLesson] = useState('');
     const [teacherLesson, setTeacherLesson] = useState('');
 
-    const joinLessonPupil = (event) => {
-        event.preventDefault();
+    const joinLessonPupil = () => {
 
-        socket.emit('join', pupilLesson)
+        socket.emit('pupil_join', pupilLesson, response => {
+            setLesson(response.lesson);
+        });
+
         navigate('/pupil');
     }
 
-    const joinLessonTeacher = async () => {
+    const joinLessonTeacher = () => {
 
-        socket.emit('join', teacherLesson)
-        navigate('/teacher')
-    }
+        socket.emit('join', teacherLesson, response => {
+            setLesson(response.lesson);
+        });
+
+        navigate('/teacher');
+
+    };
 
     return (
         <div className='m-2 '>
@@ -29,7 +35,7 @@ const Homepage = () => {
                 <h3>Teacher</h3>
                 <Form.Control type='text' placeholder='Enter lesson code...' onChange={e => setTeacherLesson(e.target.value)} />
                 <Button className='mt-1 btn-warning' type='submit'>
-                    Create New Lesson
+                    Create or Join Lesson
                 </Button>
             </Form>
             <Form className='m-2' onSubmit={joinLessonPupil}>

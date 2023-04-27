@@ -5,6 +5,7 @@ import Questions from './Questions.jsx';
 
 const Pupil = ({ isConnected, lesson }) => {
     const { questions, shortId } = lesson;
+
     return (
         <div className='main'>
             <h2>Pupil Page</h2>
