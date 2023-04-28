@@ -7,7 +7,6 @@ import Questions from './Questions.jsx';
 import AskQuestion from './AskQuestion';
 
 const Teacher = ({ isConnected, lesson }) => {
-
     const { _id, questions, shortId } = lesson;
 
     const refreshLesson = () => {
@@ -19,9 +18,9 @@ const Teacher = ({ isConnected, lesson }) => {
             <h2>Teacher Page</h2>
             <Button type='button' size='sm' variant='secondary' onClick={refreshLesson}>Refresh Lesson Data</Button>
             <ConnectionState isConnected={isConnected} shortId={shortId} />
-            <ConnectionManager />
+            {/* <ConnectionManager /> */}
             <AskQuestion shortId={shortId} _id={_id} />
-            <Questions questions={questions} />
+            <Questions lessonId={_id} questions={questions} />
         </div>
     )
 }

@@ -14,6 +14,11 @@
     height: 20px;
 }
 
+.icon {
+    width: 20px;
+    height: 20px;
+}
+
 .main {
     margin: auto;
     max-width: 1000px;
@@ -27,30 +32,8 @@
     animation: rotation 2s infinite linear;
 }
 
-.sun {
-    background-color: yellow;
-    border-radius: 50%;
-    /* creates a circular background */
-    height: 100vh;
-    /* makes the sun the size of the viewport */
-    aspect-ratio: 1 / 1;
-    animation: 4s linear 0s infinite alternate sun-rise;
-}
-
 .tinybar {
     width: 10px;
     margin: 0px;
     height: 10px;
-}
-
-@keyframes sun-rise {
-    from {
-        /* pushes the sun down past the viewport */
-        transform: translateY(110vh);
-    }
-
-    to {
-        /* returns the sun to its default position */
-        transform: translateY(0);
-    }
 }
