@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { socket } from '../../socket.js';
 import { Button, Form } from 'react-bootstrap';
 import QuestionModel from '../../Utils/QuestionModel.js';
+import spinner from '../../Assets/Spinner.svg';
 
 const AskQuestion = ({ _id, shortId }) => {
     const [text, setText] = useState('');
@@ -34,7 +35,11 @@ const AskQuestion = ({ _id, shortId }) => {
                     onChange={e => setText(e.target.value)} />
                 <Button className='m-1 btn-success' type="submit" disabled={isLoading}>Ask New Question</Button>
             </Form>
-            {isLoading && <p className='text-muted'>Waiting for responses to: {currentQuestion}</p>}
+            {isLoading &&
+                <>
+                    <p className='text-muted'><img src={spinner} className='rotate' alt="spinner" width="20" height="20" /> Waiting for responses to: {currentQuestion}</p>
+                </>
+            }
         </>
     );
 };
