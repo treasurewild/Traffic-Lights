@@ -33,14 +33,14 @@ const Homepage = ({ setLesson }) => {
             <h1>Welcome to Traffic Lights</h1>
             <Form className='m-2' onSubmit={joinLessonTeacher}>
                 <h3>Teacher</h3>
-                <Form.Control type='text' placeholder='Enter lesson code...' onChange={e => setTeacherLesson(e.target.value)} />
+                <Form.Control type='text' placeholder='Enter lesson code...' onChange={e => setTeacherLesson(e.target.value)} required />
                 <Button className='mt-1 btn-warning' type='submit'>
                     Create or Join Lesson
                 </Button>
             </Form>
             <Form className='m-2' onSubmit={joinLessonPupil}>
                 <h3>Pupil</h3>
-                <Form.Control type='text' placeholder='Enter lesson code...' onChange={e => setPupilLesson(e.target.value)} />
+                <Form.Control type='text' placeholder='Enter lesson code...' onChange={e => setPupilLesson(e.target.value)} required />
                 <Button className='mt-1 btn-success' type='submit'>
                     Join Lesson
                 </Button>
