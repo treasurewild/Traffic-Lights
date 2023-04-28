@@ -28,7 +28,6 @@ function App() {
         socket.on('new_question', data => setLesson(data));
         socket.on('joined', data => setLesson(data));
         socket.on('updated_lesson', data => setLesson(data));
-        socket.on('error', () => alert('Lesson not found'));
 
         return () => {
             socket.off('connect', onConnect);
@@ -36,7 +35,6 @@ function App() {
             socket.off('new_question', data => setLesson(data));
             socket.off('joined', data => setLesson(data));
             socket.off('updated_lesson', data => setLesson(data));
-            socket.off('no_lesson', data => alert(data.message));
 
         };
     }, []);

@@ -81,8 +81,21 @@ io.on('connection', socket => {
             .populate('questions');
 
         // Send question to all except Teacher
-        socket.to(socket.activeRoom).emit('new_question', lesson);
+        socket.to(lesson.shortId).emit('new_question', lesson);
     });
+
+    socket.on('delete_question', async data => {
+
+        const lesson = await Lesson.findByIdAndUpdate(data.lessonId, {
+            $pull: { questions: data.questionId }
+        }, { new: true })
+            .populate('questions');
+
+        await Question.findByIdAndDelete(data.questionId);
+
+        socket.to(lesson.shortId).emit('updated_lesson', lesson);
+        socket.emit('updated_lesson', lesson);
+    })
 
     socket.on('fetch_lesson', async shortId => {
         const lesson = await Lesson.findOne({ shortId: shortId })
