@@ -1,4 +1,5 @@
 import express from 'express';
+import bodyParser from 'body-parser';
 import http from 'http';
 import { Server } from 'socket.io';
 import cors from 'cors';
@@ -6,13 +7,19 @@ import Lesson from './src/Models/Lesson.model.js'
 import mongoose from 'mongoose';
 import { config } from 'dotenv';
 import Question from './src/Models/Question.model.js';
+import { users } from './src/Routes/Auth.route.js';
 
 config({ path: `.env.${process.env.NODE_ENV}` })
 
 const port = process.env.PORT;
 const app = express();
+app.use(bodyParser.json());
 app.use(cors());
+
+
 const server = http.createServer(app);
+
+app.use('/users', users)
 
 const io = new Server(server, {
     cors: {
@@ -135,9 +142,9 @@ const main = async () => {
 
 main().catch(err => console.log(err));
 
-server.listen(port, () => {
-    const SERVERHOST = server.address().address;
-    const SERVERPORT = server.address().port;
+const httpServer = app.listen(port, () => {
+    const SERVERHOST = httpServer.address().address;
+    const SERVERPORT = httpServer.address().port;
     console.log(`Server is listening on http://${SERVERHOST}:${SERVERPORT}`);
 });
 
