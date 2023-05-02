@@ -19,7 +19,12 @@ router.post('/register', (req, res) => {
         password: bcrypt.hashSync(req.body.password, 8)
     });
 
-    user.save().then(user => res.status(200).send(user)).catch(err => console.log(err))
+    user.save()
+        .then(() => res.status(200).send({ message: `User was registered successfully` }))
+        .catch(err => {
+            console.log(err);
+            res.status(500).send({ message: err })
+        })
     // (err, user) => {
     // if (err) {
     //     res.status(500).send({ message: err });
@@ -85,6 +90,7 @@ router.post('/signin', (req, res) => {
             const token = jwt.sign({ id: user.id }, process.env.DB_URI, { expiresIn: 86400 });
 
             res.status(200).send({
+                // Do I want to be sending this data as plaintext? Roles are contained in the token, do I need them here?
                 id: user._id,
                 username: user.username,
                 email: user.email,
