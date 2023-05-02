@@ -35,7 +35,7 @@ const SignIn = () => {
 
     return (
         <>
-            <Form className='m-2' onSubmit={signInHandler}>
+            <Form onSubmit={signInHandler}>
                 <h3>Sign In</h3>
                 <FloatingLabel controlId="email" label="Email" className="mb-1">
                     <Form.Control type='text' placeholder='Email' name='email' value={user.email} onChange={handleChange} required />

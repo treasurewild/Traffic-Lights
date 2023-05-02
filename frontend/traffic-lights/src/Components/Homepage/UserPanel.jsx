@@ -21,13 +21,14 @@ const UserPanel = () => {
     }
 
     return (
-        <>
-            <Button className='m-1' size='sm' onClick={() => toggle(setShowSignIn)}>Sign In</Button>
-            <Button className='m-1' size='sm' onClick={() => toggle(setShowRegister)}>Register</Button>
+        <div className='alert alert-secondary'>
+            <h3>Teacher</h3>
+            <Button className='m-1 btn-secondary' size='sm' onClick={() => toggle(setShowSignIn)} >Sign In</Button>
+            <Button className='m-1 btn-secondary' size='sm' onClick={() => toggle(setShowRegister)}>Register</Button>
 
             {showSignIn && <SignIn />}
             {showRegister && <Register />}
-        </>
+        </div>
     )
 }
 

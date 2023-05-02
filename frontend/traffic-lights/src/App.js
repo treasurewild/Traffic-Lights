@@ -15,23 +15,16 @@ function App() {
     const [lesson, setLesson] = useState({});
 
     useEffect(() => {
-        const onConnect = () => {
-            setIsConnected(true);
-        };
 
-        const onDisconnect = () => {
-            setIsConnected(false);
-        };
-
-        socket.on('connect', onConnect);
-        socket.on('disconnect', onDisconnect);
+        socket.on('connect', () => setIsConnected(true));
+        socket.on('disconnect', () => setIsConnected(false));
         socket.on('new_question', data => setLesson(data));
         socket.on('joined', data => setLesson(data));
         socket.on('updated_lesson', data => setLesson(data));
 
         return () => {
-            socket.off('connect', onConnect);
-            socket.off('disconnect', onDisconnect);
+            socket.off('connect', () => setIsConnected(true));
+            socket.off('disconnect', () => setIsConnected(false));
             socket.off('new_question', data => setLesson(data));
             socket.off('joined', data => setLesson(data));
             socket.off('updated_lesson', data => setLesson(data));

@@ -4,7 +4,7 @@ import { socket } from '../../socket';
 
 const Question = ({ question, answered, setAnswered }) => {
 
-    const index = answered.map(e => e.shortId).indexOf(question.shortId);
+    const index = answered.map(q => q.shortId).indexOf(question.shortId);
 
     const sendResponse = (event) => {
         setAnswered([

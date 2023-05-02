@@ -1,4 +1,4 @@
-import Teacher from '../../Components/Teacher/Teacher';
+import Questions from '../../Components/Teacher/Questions';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 
@@ -6,11 +6,12 @@ describe('Teacher Questions Component Tests', () => {
 
     it('Shows correct text for no questions', () => {
 
+        const mockId = '123456'
         const noMockQuestions = [];
 
         render(
             <MemoryRouter>
-                <Teacher questions={noMockQuestions} />
+                <Questions lessonId={mockId} questions={noMockQuestions} />
             </MemoryRouter>
         );
 
@@ -22,19 +23,24 @@ describe('Teacher Questions Component Tests', () => {
 
     it('Shows correct text when there are questions', () => {
 
+        const mockId = '123456';
         const mockQuestions = [
             {
                 text: 'Test 1',
-                _id: '123'
+                shortId: '111111',
+                responses: [],
+                _id: '111'
             },
             {
                 text: 'Test 2',
-                _id: '456'
+                shortId: '222222',
+                responses: [],
+                _id: '222'
             }
         ];
         render(
             <MemoryRouter>
-                <Teacher questions={mockQuestions} />
+                <Questions lessonId={mockId} questions={mockQuestions} />
             </MemoryRouter>
         );
 

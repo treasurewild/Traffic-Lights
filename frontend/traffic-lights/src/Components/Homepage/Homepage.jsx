@@ -33,7 +33,7 @@ const Homepage = ({ setLesson }) => {
         <div className='m-2 '>
             <h1>Welcome to Traffic Lights</h1>
             <UserPanel />
-            <Form className='m-2' onSubmit={joinLessonTeacher}>
+            {/* <Form className='m-2' onSubmit={joinLessonTeacher}>
                 <h3>Teacher</h3>
                 <FloatingLabel controlId="teacher" label="Lesson Code" className="mb-1">
                     <Form.Control type='text' placeholder='Enter lesson code...' onChange={e => setTeacherLesson(e.target.value)} required />
@@ -41,16 +41,19 @@ const Homepage = ({ setLesson }) => {
                 <Button className='mt-1 btn-warning' type='submit'>
                     Create or Join Lesson
                 </Button>
-            </Form>
-            <Form className='m-2' onSubmit={joinLessonPupil}>
-                <h3>Pupil</h3>
-                <FloatingLabel controlId="pupil" label="Lesson Code" className="mb-1">
-                    <Form.Control type='text' placeholder='Enter lesson code...' onChange={e => setPupilLesson(e.target.value)} required />
-                </FloatingLabel>
-                <Button className='mt-1 btn-success' type='submit'>
-                    Join Lesson
-                </Button>
-            </Form>
+            </Form> */}
+            <div className='alert alert-secondary'>
+
+                <Form onSubmit={joinLessonPupil}>
+                    <h3>Pupil</h3>
+                    <FloatingLabel controlId="pupil" label="Lesson Code" className="mb-1">
+                        <Form.Control type='text' placeholder='Enter lesson code...' onChange={e => setPupilLesson(e.target.value)} required />
+                    </FloatingLabel>
+                    <Button className='mt-1 btn-success' type='submit'>
+                        Join Lesson
+                    </Button>
+                </Form>
+            </div>
         </div>
     )
 }

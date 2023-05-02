@@ -27,7 +27,7 @@ const Register = () => {
 
     return (
         <div>
-            <Form className='m-2' onSubmit={registerHandler}>
+            <Form onSubmit={registerHandler}>
                 <h3>Register</h3>
                 <FloatingLabel controlId="name" label="Name" className="mb-1">
                     <Form.Control type='text' placeholder='Name' name='name' value={user.name} onChange={handleChange} required />
@@ -39,7 +39,7 @@ const Register = () => {
                     <Form.Control type='password' placeholder='Password' name='password' value={user.password} onChange={handleChange} required />
                 </FloatingLabel>
                 <Button className='mt-1 btn-primary' type='submit'>
-                    Sign In
+                    Register
                 </Button>
             </Form>
         </div>

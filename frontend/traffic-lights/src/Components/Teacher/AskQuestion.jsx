@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { socket } from '../../socket.js';
-import { Button, Form } from 'react-bootstrap';
+import { Button, FloatingLabel, Form } from 'react-bootstrap';
 import QuestionModel from '../../Utils/QuestionModel.js';
 import spinner from '../../Assets/Spinner.svg';
 
@@ -29,10 +29,12 @@ const AskQuestion = ({ _id, shortId }) => {
     return (
         <>
             <Form onSubmit={askQuestion}>
-                <Form.Control
-                    type="text"
-                    value={text}
-                    onChange={e => setText(e.target.value)} />
+                <FloatingLabel controlId="ask-question" label="Question" className="mb-1">
+                    <Form.Control
+                        type="text"
+                        value={text}
+                        onChange={e => setText(e.target.value)} />
+                </FloatingLabel>
                 <Button className='m-1 btn-success' type="submit" disabled={isLoading}>Ask New Question</Button>
             </Form>
             {isLoading &&

@@ -1,4 +1,4 @@
-import Pupil from '../../Components/Pupil/Pupil';
+import Questions from '../../Components/Pupil/Questions';
 import { MemoryRouter } from "react-router-dom";
 import { render, screen } from '@testing-library/react';
 
@@ -10,7 +10,7 @@ describe('Pupil Questions Component Tests', () => {
 
         render(
             <MemoryRouter>
-                <Pupil questions={noMockQuestions} />
+                <Questions questions={noMockQuestions} />
             </MemoryRouter>
         );
 
@@ -35,7 +35,7 @@ describe('Pupil Questions Component Tests', () => {
 
         render(
             <MemoryRouter>
-                <Pupil questions={mockQuestions} />
+                <Questions questions={mockQuestions} />
             </MemoryRouter>
         );
 
