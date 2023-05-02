@@ -8,6 +8,7 @@ import mongoose from 'mongoose';
 import { config } from 'dotenv';
 import Question from './src/Models/Question.model.js';
 import { users } from './src/Routes/Auth.route.js';
+import { roles } from './src/Routes/Roles.route.js';
 
 config({ path: `.env.${process.env.NODE_ENV}` })
 
@@ -19,7 +20,8 @@ app.use(cors());
 
 const server = http.createServer(app);
 
-app.use('/users', users)
+app.use('/users', users);
+app.use('/roles', roles);
 
 const io = new Server(server, {
     cors: {
