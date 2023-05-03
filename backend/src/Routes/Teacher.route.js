@@ -44,4 +44,11 @@ router.post('/new-lesson',
             .catch(err => res.status(400).send(err))
     });
 
+router.delete('/delete-lesson',
+    async (req, res) => {
+        await Lesson.findByIdAndDelete(req.body.id)
+            .then(() => res.status(200).send({ message: 'Deleted successfully' }))
+            .catch(err => res.status(400).send(err));
+    })
+
 export { router as teacher };

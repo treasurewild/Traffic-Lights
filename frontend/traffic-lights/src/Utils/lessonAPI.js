@@ -44,3 +44,18 @@ export const newLesson = async data => {
         }
     }
 }
+
+export const deleteLesson = async data => {
+    try {
+        const res = await axios.delete(`${process.env.REACT_APP_URL}/teacher/delete-lesson`, { data: data });
+        if (res.status === 200) {
+            return { status: res.status }
+        }
+        return { message: 'There was a problem' }
+    }
+    catch (err) {
+        return {
+            status: err.response?.status ?? 204
+        }
+    }
+}

@@ -7,6 +7,7 @@ const Teacher = ({ setLesson }) => {
 
     const user = JSON.parse(localStorage.getItem('user'));
     const [lessons, setLessons] = useState([]);
+    const [showAll, setShowAll] = useState(false);
 
     const getLessonsHandler = async () => {
         const res = await getLessons(user.id)
@@ -24,8 +25,8 @@ const Teacher = ({ setLesson }) => {
         <div className='main'>
             <h2>Teacher</h2>
             <h4>Welcome, {user.name}</h4>
-            <Lessons lessons={lessons} setLesson={setLesson} />
-            <NewLesson lessons={lessons} setLessons={setLessons} setLesson={setLesson} />
+            <Lessons lessons={lessons} getLessonsHandler={getLessonsHandler} showAll={showAll} setShowAll={setShowAll} setLesson={setLesson} />
+            {!showAll && <NewLesson lessons={lessons} setLessons={setLessons} setLesson={setLesson} />}
         </div>
     )
 }

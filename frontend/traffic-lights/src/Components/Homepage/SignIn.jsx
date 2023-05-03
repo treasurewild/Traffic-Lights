@@ -2,9 +2,8 @@ import React, { useState } from 'react';
 import { Form, Button, FloatingLabel } from 'react-bootstrap';
 import { signIn } from '../../Utils/auth.service';
 import { useNavigate } from 'react-router-dom';
-import { getLessons } from '../../Utils/lessonAPI';
 
-const SignIn = ({ setLessons }) => {
+const SignIn = () => {
 
     const navigate = useNavigate();
 
