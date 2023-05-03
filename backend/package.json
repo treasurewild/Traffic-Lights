@@ -6,7 +6,7 @@
     "type": "module",
     "scripts": {
         "test": "NODE_ENV=test mocha --timeout=10000 --exit",
-        "start": "NODE_ENV=development nodemon index",
+        "start": "NODE_ENV=production nodemon index",
         "start-win": "SET NODE_ENV=development&& nodemon index",
         "test-win": "SET NODE_ENV=test&& mocha --timeout=10000 --exit",
         "build": "npm i"
