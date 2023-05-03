@@ -29,7 +29,7 @@ const NewLesson = ({ lessons, setLessons, setLesson }) => {
         e.preventDefault();
         const { learningObjective, classCode, level, subject } = lessonData;
         const res = await newLesson({ lesson: new LessonModel(learningObjective, classCode, level, subject, user.id) });
-        console.log(res)
+
         if (res.status === 200) {
             setLesson(res.lesson);
             setLessons([

@@ -106,7 +106,14 @@ io.on('connection', socket => {
 
         socket.to(lesson.shortId).emit('updated_lesson', lesson);
         socket.emit('updated_lesson', lesson);
-    })
+    });
+
+    socket.on('delete_lesson', async data => {
+        await Lesson.findByIdAndDelete(data.id);
+        const lessons = await Lesson.find({ teacher: data.teacher });
+
+        socket.emit('updated_lessons', lessons);
+    });
 
     socket.on('fetch_lesson', async shortId => {
         const lesson = await Lesson.findOne({ shortId: shortId })
