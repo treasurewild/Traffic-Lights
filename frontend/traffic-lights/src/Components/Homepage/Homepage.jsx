@@ -54,7 +54,9 @@ const Homepage = ({ setLesson, setLessons }) => {
             </div>
             <div className='alert alert-secondary'>
                 <p >Traffic Lights is a demo App created by Wil Treasure.</p>
-                <p>Please don't add sensitive personal information!</p>
+                <p><strong>Please don't add sensitive personal information!</strong></p>
+                <p>It's created using the following technologies: ReactJS, Mongoose, Express, Node, Short-Unique-ID, and Socket.io.
+                    <br />It uses Bootstrap and React Bootstrap for styling.</p>
             </div>
         </div>
     )
