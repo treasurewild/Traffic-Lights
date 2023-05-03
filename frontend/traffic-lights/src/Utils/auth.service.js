@@ -11,7 +11,6 @@ export const signIn = async (email, password) => {
         if (data.accessToken) {
             localStorage.setItem(`user`, JSON.stringify(data)); // Is it a good idea to put this in local storage?
         }
-
         return data;
     }
     catch (error) {
@@ -28,8 +27,7 @@ export const register = async (handle, name, email, password) => {
             password
         });
 
-        const data = response.data;
-        return data;
+        return { data: response.data, status: response.status };
     }
     catch (error) {
         return { error: error.response.data.message }

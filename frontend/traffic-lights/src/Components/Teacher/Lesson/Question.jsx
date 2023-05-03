@@ -1,8 +1,8 @@
 import React from 'react';
 import Responses from './Responses';
-import trashCan from '../../Assets/trash-can-solid.svg';
+import trashCan from '../../../Assets/trash-can-solid.svg';
 import { Button } from 'react-bootstrap';
-import { socket } from '../../socket';
+import { socket } from '../../../socket';
 
 const Question = ({ lessonId, question }) => {
 

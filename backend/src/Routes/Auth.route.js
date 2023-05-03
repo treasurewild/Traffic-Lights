@@ -66,7 +66,10 @@ router.post('/register', (req, res) => {
 
 router.post('/signin', (req, res) => {
     User.findOne({ email: req.body.email })
-        // .populate('roles')
+        // .populate({
+        //     path: 'lessons',
+        //     populate: { path: 'questions' }
+        // })
         .then(user => {
             if (!user) {
                 return res.status(404).send({ message: `User not found` });
@@ -92,8 +95,8 @@ router.post('/signin', (req, res) => {
             res.status(200).send({
                 // Do I want to be sending this data as plaintext? Roles are contained in the token, do I need them here?
                 id: user._id,
-                username: user.username,
-                email: user.email,
+                name: user.name,
+                lessons: user.lessons,
                 roles: authorities,
                 accessToken: token
             });

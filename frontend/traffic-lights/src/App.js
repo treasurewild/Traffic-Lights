@@ -8,6 +8,7 @@ import Header from './Components/Page/Header';
 import Homepage from './Components/Homepage/Homepage';
 import Pupil from './Components/Pupil/Pupil';
 import Teacher from './Components/Teacher/Teacher';
+import Lesson from './Components/Teacher/Lesson/Lesson';
 
 function App() {
 
@@ -28,7 +29,6 @@ function App() {
             socket.off('new_question', data => setLesson(data));
             socket.off('joined', data => setLesson(data));
             socket.off('updated_lesson', data => setLesson(data));
-
         };
     }, []);
 
@@ -37,8 +37,9 @@ function App() {
             <Header />
             <Routes>
                 <Route path='/' element={<Homepage setLesson={setLesson} />} />
-                <Route path='/teacher' element={<Teacher isConnected={isConnected} lesson={lesson} />} />
-                <Route path='/pupil' element={<Pupil isConnected={isConnected} lesson={lesson} />} />
+                <Route path='/teacher' element={<Teacher setLesson={setLesson} />} />
+                <Route path='/pupil' element={<Pupil lesson={lesson} />} />
+                <Route path='/teacher/lesson/:id' element={<Lesson lesson={lesson} />} />
             </Routes>
             <Footer />
         </div>

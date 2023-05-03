@@ -4,11 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import { socket } from '../../socket';
 import UserPanel from './UserPanel';
 
-const Homepage = ({ setLesson }) => {
+const Homepage = ({ setLesson, setLessons }) => {
+
+    const user = JSON.parse(localStorage.getItem('user'));
 
     const navigate = useNavigate();
     const [pupilLesson, setPupilLesson] = useState('');
-    const [teacherLesson, setTeacherLesson] = useState('');
 
     const joinLessonPupil = () => {
 
@@ -19,20 +20,30 @@ const Homepage = ({ setLesson }) => {
         navigate('/pupil');
     }
 
-    const joinLessonTeacher = () => {
+    // const joinLessonTeacher = () => {
 
-        socket.emit('join', teacherLesson, response => {
-            setLesson(response.lesson);
-        });
+    //     socket.emit('join', teacherLesson, response => {
+    //         setLesson(response.lesson);
+    //     });
 
-        navigate('/teacher');
+    //     navigate('/teacher');
 
-    };
+    // };
+
+    const goToLessons = () => {
+        navigate('/teacher')
+    }
 
     return (
-        <div className='m-2 '>
+        <div className='main'>
             <h1>Welcome to Traffic Lights</h1>
-            <UserPanel />
+            {user?.accessToken ?
+                <div className='d-grid'>
+                    <Button className='m-1' size='lg' onClick={goToLessons}>Go to Lessons</Button>
+                </div>
+                :
+                <UserPanel setLessons={setLessons} />
+            }
             {/* <Form className='m-2' onSubmit={joinLessonTeacher}>
                 <h3>Teacher</h3>
                 <FloatingLabel controlId="teacher" label="Lesson Code" className="mb-1">

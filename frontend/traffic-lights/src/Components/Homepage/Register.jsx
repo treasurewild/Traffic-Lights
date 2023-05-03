@@ -4,6 +4,8 @@ import { register } from '../../Utils/auth.service';
 
 const Register = () => {
 
+    const [message, setMessage] = useState('');
+
     const [user, setUser] = useState({
         handle: ``,
         name: ``,
@@ -23,6 +25,10 @@ const Register = () => {
         e.preventDefault();
 
         const res = await register(user.handle, user.name, user.email, user.password);
+
+        if (res.status === 200)
+            setMessage('Registration successful')
+
     };
 
     return (
@@ -38,6 +44,13 @@ const Register = () => {
                 <FloatingLabel controlId="password" label="Password" className="mb-1">
                     <Form.Control type='password' placeholder='Password' name='password' value={user.password} onChange={handleChange} required />
                 </FloatingLabel>
+                {message && (
+                    <>
+                        <div className="alert alert-success" role="alert">
+                            {message}
+                        </div>
+                    </>
+                )}
                 <Button className='mt-1 btn-primary' type='submit'>
                     Register
                 </Button>
