@@ -38,7 +38,7 @@ function App() {
             <Routes>
                 <Route path='/' element={<Homepage setLesson={setLesson} />} />
                 <Route path='/teacher' element={<Teacher setLesson={setLesson} />} />
-                <Route path='/pupil' element={<Pupil lesson={lesson} />} />
+                <Route path='/pupil/:id' element={<Pupil lesson={lesson} />} />
                 <Route path='/teacher/lesson/:id' element={<Lesson lesson={lesson} />} />
             </Routes>
             <Footer />

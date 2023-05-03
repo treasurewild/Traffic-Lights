@@ -18,7 +18,10 @@ const Lesson = ({ lesson }) => {
             <Button className='m-1 align-self-center' variant='secondary' size='sm' onClick={() => navigate('/teacher')} >
                 &#60; Back to Lessons
             </Button>
-            <h3 className='alert alert-secondary'>Class code: {shortId}</h3>
+            <h3 className='alert alert-secondary'>Class code: {shortId}&#160;
+                <Button size='sm' variant='secondary' onClick={() => navigator.clipboard.writeText(`${shortId}`)}>Copy Code</Button>
+            </h3>
+
             <h5>Learning Objective: {learningObjective}</h5>
             <h6>Subject:{subject} Class:{classCode}</h6>
             <Button type='button' className='mb-2' size='sm' variant='secondary' onClick={refreshLesson}>Refresh Lesson Data</Button>

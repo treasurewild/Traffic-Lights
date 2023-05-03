@@ -17,18 +17,8 @@ const Homepage = ({ setLesson, setLessons }) => {
             setLesson(response.lesson);
         });
 
-        navigate('/pupil');
+        navigate(`/pupil/${pupilLesson}`);
     }
-
-    // const joinLessonTeacher = () => {
-
-    //     socket.emit('join', teacherLesson, response => {
-    //         setLesson(response.lesson);
-    //     });
-
-    //     navigate('/teacher');
-
-    // };
 
     const goToLessons = () => {
         navigate('/teacher')
@@ -37,6 +27,12 @@ const Homepage = ({ setLesson, setLessons }) => {
     return (
         <div className='main'>
             <h1>Welcome to Traffic Lights</h1>
+            <div className='alert alert-danger'>
+                <h4>How to Use Traffic Lights</h4>
+                <p>Traffic Lights is a simple tool for class feedback when teaching remotely.</p>
+                <p>Teachers ask questions and get Green-Amber-Red feedback from the class to gauge progress and understanding. This knowledge allows them guide their lesson, differentiate tasks and informs future learning.</p>
+                <p>Teachers can save lesson data for reference, and even create templates to reuse for future lessons.</p>
+            </div>
             {user?.accessToken ?
                 <div className='d-grid'>
                     <Button className='m-1' size='lg' onClick={goToLessons}>Go to Lessons</Button>
@@ -44,16 +40,7 @@ const Homepage = ({ setLesson, setLessons }) => {
                 :
                 <UserPanel setLessons={setLessons} />
             }
-            {/* <Form className='m-2' onSubmit={joinLessonTeacher}>
-                <h3>Teacher</h3>
-                <FloatingLabel controlId="teacher" label="Lesson Code" className="mb-1">
-                    <Form.Control type='text' placeholder='Enter lesson code...' onChange={e => setTeacherLesson(e.target.value)} required />
-                </FloatingLabel>
-                <Button className='mt-1 btn-warning' type='submit'>
-                    Create or Join Lesson
-                </Button>
-            </Form> */}
-            <div className='alert alert-secondary'>
+            <div className='alert alert-success'>
 
                 <Form onSubmit={joinLessonPupil}>
                     <h3>Pupil</h3>
@@ -64,6 +51,10 @@ const Homepage = ({ setLesson, setLessons }) => {
                         Join Lesson
                     </Button>
                 </Form>
+            </div>
+            <div className='alert alert-secondary'>
+                <p >Traffic Lights is a demo App created by Wil Treasure.</p>
+                <p>Please don't add sensitive personal information!</p>
             </div>
         </div>
     )

@@ -21,7 +21,7 @@ const UserPanel = ({ setLessons }) => {
     }
 
     return (
-        <div className='alert alert-secondary'>
+        <div className='alert alert-warning'>
             <h3>Teacher</h3>
             <Button className='m-1 btn-secondary' size='sm' onClick={() => toggle(setShowSignIn)} >Sign In</Button>
             <Button className='m-1 btn-secondary' size='sm' onClick={() => toggle(setShowRegister)}>Register</Button>
