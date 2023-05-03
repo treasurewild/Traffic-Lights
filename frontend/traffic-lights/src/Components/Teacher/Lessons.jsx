@@ -32,7 +32,7 @@ const Lessons = ({ lessons, getLessonsHandler, setLesson, showAll, setShowAll })
     return (
         <>
             <h5>Recent Lessons</h5>
-            <Button size='sm' variant='secondary' onClick={() => setShowAll(!showAll)}>Show All</Button>
+            {lessons.length > 10 && <Button size='sm' variant='secondary' onClick={() => setShowAll(!showAll)}>Show All</Button>}
             <div className='d-flex flex-row flex-wrap'>
                 {displayLessons()}
             </div>
