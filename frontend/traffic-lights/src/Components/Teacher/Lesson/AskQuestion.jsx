@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
-import { socket } from '../../socket.js';
+import { socket } from '../../../socket.js';
 import { Button, FloatingLabel, Form } from 'react-bootstrap';
-import QuestionModel from '../../Utils/QuestionModel.js';
-import spinner from '../../Assets/Spinner.svg';
+import QuestionModel from '../../../Utils/QuestionModel.js';
+import spinner from '../../../Assets/Spinner.svg';
 
 const AskQuestion = ({ _id, shortId }) => {
     const [text, setText] = useState('');
@@ -32,6 +32,7 @@ const AskQuestion = ({ _id, shortId }) => {
                 <FloatingLabel controlId="ask-question" label="Question" className="mb-1">
                     <Form.Control
                         type="text"
+                        placeholder='Ask a Question'
                         value={text}
                         onChange={e => setText(e.target.value)} />
                 </FloatingLabel>

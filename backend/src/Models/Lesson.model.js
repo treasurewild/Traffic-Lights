@@ -7,7 +7,15 @@ const lessonSchema = new mongoose.Schema(
             type: mongoose.Schema.Types.ObjectId,
             ref: "Question",
             default: []
-        }]
+        }],
+        teacher: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: "User",
+        },
+        learningObjective: String,
+        classCode: String,
+        subject: String,
+        level: String
     });
 
 const Lesson = mongoose.model('Lesson', lessonSchema);

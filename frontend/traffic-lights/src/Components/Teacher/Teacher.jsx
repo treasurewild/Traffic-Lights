@@ -1,28 +1,31 @@
-import React from 'react';
-import ConnectionManager from '../../Sockets/ConnectionManager';
-import ConnectionState from '../../Sockets/ConnectionState';
-import { socket } from '../../socket';
-import { Button } from 'react-bootstrap';
-import Questions from './Questions.jsx';
-import AskQuestion from './AskQuestion';
 import Lessons from './Lessons';
+import { useEffect, useState } from 'react';
+import { getLessons } from '../../Utils/lessonAPI';
+import NewLesson from './NewLesson';
 
-const Teacher = ({ isConnected, lesson }) => {
-    const { _id, questions, shortId } = lesson;
+const Teacher = ({ setLesson }) => {
 
-    const refreshLesson = () => {
-        socket.emit('fetch_lesson', shortId);
+    const user = JSON.parse(localStorage.getItem('user'));
+    const [lessons, setLessons] = useState([]);
+
+    const getLessonsHandler = async () => {
+        const res = await getLessons(user.id)
+
+        const data = res.lessons ? res.lessons : [];
+
+        setLessons(data);
     }
+
+    useEffect(() => {
+        getLessonsHandler();
+    }, [])
 
     return (
         <div className='main'>
-            <h2>Teacher Page</h2>
-            <Lessons />
-            <Button type='button' size='sm' variant='secondary' onClick={refreshLesson}>Refresh Lesson Data</Button>
-            <ConnectionState isConnected={isConnected} shortId={shortId} />
-            {/* <ConnectionManager /> */}
-            <AskQuestion shortId={shortId} _id={_id} />
-            <Questions lessonId={_id} questions={questions} />
+            <h2>Teacher</h2>
+            <h4>Welcome, {user.name}</h4>
+            <Lessons lessons={lessons} setLesson={setLesson} />
+            <NewLesson lessons={lessons} setLessons={setLessons} setLesson={setLesson} />
         </div>
     )
 }

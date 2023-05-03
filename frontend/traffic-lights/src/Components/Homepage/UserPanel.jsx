@@ -3,7 +3,7 @@ import { Button } from 'react-bootstrap';
 import Register from './Register';
 import SignIn from './SignIn';
 
-const UserPanel = () => {
+const UserPanel = ({ setLessons }) => {
 
     const [showSignIn, setShowSignIn] = useState(false);
     const [showRegister, setShowRegister] = useState(false);
@@ -26,7 +26,7 @@ const UserPanel = () => {
             <Button className='m-1 btn-secondary' size='sm' onClick={() => toggle(setShowSignIn)} >Sign In</Button>
             <Button className='m-1 btn-secondary' size='sm' onClick={() => toggle(setShowRegister)}>Register</Button>
 
-            {showSignIn && <SignIn />}
+            {showSignIn && <SignIn setLessons={setLessons} />}
             {showRegister && <Register />}
         </div>
     )
