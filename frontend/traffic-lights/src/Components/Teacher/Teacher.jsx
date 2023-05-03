@@ -19,6 +19,7 @@ const Teacher = ({ setLesson }) => {
 
     useEffect(() => {
         getLessonsHandler();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     return (
@@ -26,7 +27,7 @@ const Teacher = ({ setLesson }) => {
             <h2>Teacher</h2>
             <h4>Welcome, {user.name}</h4>
             <Lessons lessons={lessons} getLessonsHandler={getLessonsHandler} showAll={showAll} setShowAll={setShowAll} setLesson={setLesson} />
-            {!showAll && <NewLesson lessons={lessons} setLessons={setLessons} setLesson={setLesson} />}
+            {(!showAll || lessons.length < 10) && <NewLesson lessons={lessons} setLessons={setLessons} setLesson={setLesson} />}
         </div>
     )
 }
