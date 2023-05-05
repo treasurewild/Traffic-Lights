@@ -1,4 +1,4 @@
-import AskQuestion from "../../Components/Teacher/AskQuestion";
+import AskQuestion from "../../Components/Teacher/Lesson/AskQuestion";
 import { MemoryRouter } from "react-router-dom";
 import { screen, render } from "@testing-library/react";
 

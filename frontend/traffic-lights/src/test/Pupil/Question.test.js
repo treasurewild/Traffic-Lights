@@ -1,7 +1,6 @@
 import Question from "../../Components/Pupil/Question";
 import { MemoryRouter } from "react-router-dom";
 import { screen, render } from "@testing-library/react";
-import { useState } from "react";
 
 describe('Pupil Question Component Tests', () => {
     test('Renders 3 option buttons if no answer has been given yet', () => {

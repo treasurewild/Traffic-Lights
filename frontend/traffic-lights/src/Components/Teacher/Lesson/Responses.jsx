@@ -1,4 +1,6 @@
-import React from 'react'
+import green from '../../../Assets/Green.svg';
+import amber from '../../../Assets/Amber.svg';
+import red from '../../../Assets/Red.svg';
 
 const Responses = ({ responses }) => {
 
@@ -8,13 +10,13 @@ const Responses = ({ responses }) => {
 
         const display = responses?.map((response, index) => {
             if (response === '3red')
-                return <div key={index} className='bg-danger bar'></div>;
+                return <img alt='red square' key={index} className='bar' src={red} />;
 
             if (response === '2amber')
-                return <div key={index} className='bg-warning bar'></div>;
+                return <img alt='amber square' key={index} className='bar' src={amber} />;
 
             if (response === '1green')
-                return <div key={index} className='bg-success bar'></div>;
+                return <img alt='green square' key={index} className='bar' src={green} />;
 
             return <div key='na'></div>
         });
