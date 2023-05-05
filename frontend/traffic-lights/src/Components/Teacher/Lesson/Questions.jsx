@@ -1,14 +1,14 @@
 import React from 'react';
 import Question from './Question.jsx';
 
-const Questions = ({ lessonId, questions }) => {
+const Questions = ({ lesson, questions }) => {
 
     const displayQuestions = () => {
         if (questions?.length > 0) {
             const display = questions.map((question, index) => {
                 return (
                     <div key={index}>
-                        <Question lessonId={lessonId} question={question} />
+                        <Question lesson={lesson} question={question} />
                     </div>)
             });
             return display;

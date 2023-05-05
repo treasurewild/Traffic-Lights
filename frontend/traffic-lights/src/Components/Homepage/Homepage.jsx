@@ -35,7 +35,7 @@ const Homepage = ({ setLesson, setLessons }) => {
             </div>
             {user?.accessToken ?
                 <div className='d-grid'>
-                    <Button className='m-1' size='lg' onClick={goToLessons}>Go to Lessons</Button>
+                    <Button variant='warning' className='mb-3' size='lg' onClick={goToLessons}>Go to Lessons</Button>
                 </div>
                 :
                 <UserPanel setLessons={setLessons} />

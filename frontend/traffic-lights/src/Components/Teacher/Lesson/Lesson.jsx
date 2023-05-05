@@ -23,10 +23,10 @@ const Lesson = ({ lesson }) => {
             </h3>
 
             <h5>Learning Objective: {learningObjective}</h5>
-            <h6>Subject:{subject} Class:{classCode}</h6>
+            <h6>Subject: <strong>{subject}</strong> Class: <strong>{classCode}</strong></h6>
             <Button type='button' className='mb-2' size='sm' variant='secondary' onClick={refreshLesson}>Refresh Lesson Data</Button>
             <AskQuestion shortId={shortId} _id={_id} />
-            <Questions lessonId={_id} questions={questions} />
+            <Questions lesson={lesson} questions={questions} />
         </div>
     )
 }

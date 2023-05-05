@@ -44,19 +44,21 @@ const NewLesson = ({ lessons, setLessons, setLesson }) => {
         <>
             <h4>New Lesson</h4>
             <Form onSubmit={createLessonHandler}>
-                <FloatingLabel controlId="name" label="Learning Objective" className="mb-1">
-                    <Form.Control type='text' name='learningObjective' placeholder='Learning Objective' value={lessonData.learningObjective} onChange={handleChange} />
-                </FloatingLabel>
-                <FloatingLabel controlId="class" label="Class" className="mb-1">
-                    <Form.Control type='text' name='classCode' placeholder='Class' value={lessonData.classCode} onChange={handleChange} />
-                </FloatingLabel>
-                <FloatingLabel controlId="subject" label="Subject" className="mb-1">
-                    <Form.Control type='text' name='subject' placeholder='Subject' value={lessonData.subject} onChange={handleChange} />
-                </FloatingLabel>
-                <FloatingLabel controlId="level" label="Level" className="mb-1">
-                    <Form.Control type='text' name='level' placeholder='Level' value={lessonData.level} onChange={handleChange} />
-                </FloatingLabel>
-                <Button type='submit' size='lg' variant='success' >Create New Lesson</Button>
+                <Form.Group className="mb-3" >
+                    <FloatingLabel controlId="name" label="Learning Objective" className="mb-1">
+                        <Form.Control type='text' name='learningObjective' placeholder='Learning Objective' value={lessonData.learningObjective} onChange={handleChange} />
+                    </FloatingLabel>
+                    <FloatingLabel controlId="class" label="Class" className="mb-1">
+                        <Form.Control type='text' name='classCode' placeholder='Class' value={lessonData.classCode} onChange={handleChange} />
+                    </FloatingLabel>
+                    <FloatingLabel controlId="subject" label="Subject" className="mb-1">
+                        <Form.Control type='text' name='subject' placeholder='Subject' value={lessonData.subject} onChange={handleChange} />
+                    </FloatingLabel>
+                    <FloatingLabel controlId="level" label="Level" className="mb-1">
+                        <Form.Control type='text' name='level' placeholder='Level' value={lessonData.level} onChange={handleChange} />
+                    </FloatingLabel>
+                    <Button type='submit' size='lg' variant='success' >Create New Lesson</Button>
+                </Form.Group>
             </Form>
         </>
     )
