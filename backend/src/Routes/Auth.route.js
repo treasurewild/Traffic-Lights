@@ -47,10 +47,8 @@ router.post('/signin', (req, res) => {
             const token = jwt.sign({ id: user.id }, process.env.DB_URI, { expiresIn: 86400 });
 
             res.status(200).send({
-                // Do I want to be sending this data as plaintext? Roles are contained in the token, do I need them here?
                 id: user._id,
                 name: user.name,
-                lessons: user.lessons,
                 roles: authorities,
                 accessToken: token
             });

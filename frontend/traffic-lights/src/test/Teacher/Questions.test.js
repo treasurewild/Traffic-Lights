@@ -1,4 +1,4 @@
-import Questions from '../../Components/Teacher/Questions';
+import Questions from '../../Components/Teacher/Lesson/Questions';
 import { render, screen } from '@testing-library/react';
 import { MemoryRouter } from 'react-router-dom';
 

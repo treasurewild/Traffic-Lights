@@ -25,10 +25,9 @@ const Lesson = ({ lesson }) => {
             <h5>Learning Objective: {learningObjective}</h5>
             <h6>Subject:{subject} Class:{classCode}</h6>
             <Button type='button' className='mb-2' size='sm' variant='secondary' onClick={refreshLesson}>Refresh Lesson Data</Button>
-            {/* <ConnectionState isConnected={isConnected} shortId={shortId} /> */}
-            {/* <ConnectionManager /> */}
             <AskQuestion shortId={shortId} _id={_id} />
-            <Questions lessonId={_id} questions={questions} /></div>
+            <Questions lessonId={_id} questions={questions} />
+        </div>
     )
 }
 
