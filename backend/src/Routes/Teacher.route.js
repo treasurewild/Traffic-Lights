@@ -4,18 +4,17 @@ import User from '../Models/User.model.js';
 
 const router = express.Router();
 
-// Not needed
-// router.get('/lesson/:id',
-//     async (req, res) => {
-//         await Lesson.findById(req.params.id)
-//             .populate('questions')
-//             .then(lesson => {
-//                 if (!lesson)
-//                     return res.status(204)
-//                 return res.status(200).send(lesson)
-//             })
-//             .catch(err => res.status(400).send(err))
-//     });
+router.get('/lesson/:id',
+    async (req, res) => {
+        await Lesson.findById(req.params.id)
+            .populate('questions')
+            .then(lesson => {
+                if (!lesson)
+                    return res.status(204)
+                return res.status(200).send(lesson)
+            })
+            .catch(err => res.status(400).send(err))
+    });
 
 router.get('/lessons/:teacherId',
     async (req, res) => {
