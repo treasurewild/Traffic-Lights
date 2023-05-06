@@ -7,7 +7,7 @@ import { socket } from '../../../socket';
 const Lesson = ({ lesson }) => {
 
     const navigate = useNavigate();
-    const { shortId, _id, questions, learningObjective, classCode, subject } = lesson;
+    const { shortId, _id, learningObjective, classCode, subject } = lesson;
 
     const refreshLesson = () => {
         socket.emit('fetch_lesson', shortId);
@@ -26,7 +26,7 @@ const Lesson = ({ lesson }) => {
             <h6>Subject: <strong>{subject}</strong> Class: <strong>{classCode}</strong></h6>
             <Button type='button' className='mb-2' size='sm' variant='secondary' onClick={refreshLesson}>Refresh Lesson Data</Button>
             <AskQuestion shortId={shortId} _id={_id} />
-            <Questions lesson={lesson} questions={questions} />
+            <Questions lesson={lesson} />
         </div>
     )
 }

@@ -19,7 +19,7 @@ const LessonSummary = ({ lesson, setLesson, getLessonsHandler }) => {
     }
 
     const deleteLessonHandler = async () => {
-        const res = await deleteLesson({ teacher: teacher, id: _id });
+        const res = await deleteLesson(_id);
 
         if (res.status === 200)
             getLessonsHandler();

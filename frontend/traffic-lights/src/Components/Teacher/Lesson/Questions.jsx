@@ -1,7 +1,8 @@
 import React from 'react';
 import Question from './Question.jsx';
 
-const Questions = ({ lesson, questions }) => {
+const Questions = ({ lesson }) => {
+    const { questions } = lesson;
 
     const displayQuestions = () => {
         if (questions?.length > 0) {

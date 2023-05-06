@@ -28,7 +28,7 @@ const NewLesson = ({ lessons, setLessons, setLesson }) => {
     const createLessonHandler = async (e) => {
         e.preventDefault();
         const { learningObjective, classCode, level, subject } = lessonData;
-        const res = await newLesson({ lesson: new LessonModel(learningObjective, classCode, level, subject, user.id) });
+        const res = await newLesson(new LessonModel(learningObjective, classCode, level, subject, user.id));
 
         if (res.status === 200) {
             setLesson(res.lesson);
