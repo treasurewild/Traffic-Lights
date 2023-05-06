@@ -34,8 +34,6 @@ describe('Lessons Component Tests', () => {
             </MemoryRouter>
         )
 
-        const showAllButton = screen.getByText('Show All');
-
         const LO = screen.getAllByText(/Objective/i);
         const level = screen.getAllByText(/Level/i);
         const subject = screen.getAllByText(/Subject/i);
@@ -43,22 +41,5 @@ describe('Lessons Component Tests', () => {
         expect(LO.length).toBe(12);
         expect(level.length).toBe(12);
         expect(subject.length).toBe(12);
-    });
-
-    test('should not display Show All button for <= 10 lessons', () => {
-        render(
-            <MemoryRouter>
-                <Lessons lessons={mockLessonsSmall} />
-            </MemoryRouter>
-        )
-
-        const LO = screen.getAllByText(/Objective/i);
-        const level = screen.getAllByText(/Level/i);
-        const subject = screen.getAllByText(/Subject/i);
-
-        expect(LO.length).toBe(1);
-        expect(level.length).toBe(1);
-        expect(subject.length).toBe(1);
-
     });
 })

@@ -19,7 +19,7 @@ const LessonSummary = ({ lesson, setLesson, getLessonsHandler }) => {
     }
 
     const deleteLessonHandler = async () => {
-        const res = await deleteLesson({ teacher: teacher, id: _id });
+        const res = await deleteLesson(_id);
 
         if (res.status === 200)
             getLessonsHandler();
@@ -27,8 +27,11 @@ const LessonSummary = ({ lesson, setLesson, getLessonsHandler }) => {
 
     return (
         <>
-            <Card className="m-1 lesson" type='button' >
-                <Card.Header><strong>{subject} {level}</strong></Card.Header>
+            <Card className="m-1 lesson">
+                <Card.Header>
+                    {subject && <p>Subject: <strong>{subject}</strong></p>}
+                    {level && <p>Level: <strong>{level}</strong></p>}
+                </Card.Header>
                 <Card.Body>
                     <Card.Text>
                         {learningObjective}

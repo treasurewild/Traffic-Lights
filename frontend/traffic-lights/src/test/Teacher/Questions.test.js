@@ -6,12 +6,18 @@ describe('Teacher Questions Component Tests', () => {
 
     it('Shows correct text for no questions', () => {
 
-        const mockId = '123456'
-        const noMockQuestions = [];
+        const mockLesson = {
+            learningObjective: 'Test',
+            subject: 'Test',
+            level: 'Test',
+            _id: '11111111111111111111',
+            shortId: '111111',
+            questions: []
+        }
 
         render(
             <MemoryRouter>
-                <Questions lessonId={mockId} questions={noMockQuestions} />
+                <Questions lesson={mockLesson} />
             </MemoryRouter>
         );
 
@@ -23,24 +29,31 @@ describe('Teacher Questions Component Tests', () => {
 
     it('Shows correct text when there are questions', () => {
 
-        const mockId = '123456';
-        const mockQuestions = [
-            {
-                text: 'Test 1',
-                shortId: '111111',
-                responses: [],
-                _id: '111'
-            },
-            {
-                text: 'Test 2',
-                shortId: '222222',
-                responses: [],
-                _id: '222'
-            }
-        ];
+        const mockLesson = {
+            learningObjective: 'Test',
+            subject: 'Test',
+            level: 'Test',
+            _id: '11111111111111111111',
+            shortId: '111111',
+            questions: [
+                {
+                    text: 'Test 1',
+                    shortId: '111111',
+                    responses: [],
+                    _id: '111'
+                },
+                {
+                    text: 'Test 2',
+                    shortId: '222222',
+                    responses: [],
+                    _id: '222'
+                }
+            ]
+        }
+
         render(
             <MemoryRouter>
-                <Questions lessonId={mockId} questions={mockQuestions} />
+                <Questions lesson={mockLesson} />
             </MemoryRouter>
         );
 
