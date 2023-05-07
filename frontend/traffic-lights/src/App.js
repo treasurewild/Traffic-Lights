@@ -14,14 +14,29 @@ function App() {
 
     const [isConnected, setIsConnected] = useState(socket.connected);
     const [lesson, setLesson] = useState({});
+    const [provideResponse, setProvideResponse] = useState({ question: {}, show: false });
+
+    const respond = question => {
+        setProvideResponse({
+            ...question,
+            show: true
+        });
+
+        setTimeout(() => {
+            setProvideResponse({
+                question: {},
+                show: false
+            });
+        }, 10000);
+    };
 
     useEffect(() => {
-
         socket.on('connect', () => setIsConnected(true));
         socket.on('disconnect', () => setIsConnected(false));
         socket.on('new_question', data => setLesson(data));
         socket.on('joined', data => setLesson(data));
         socket.on('updated_lesson', data => setLesson(data));
+        socket.on('refresh_question', respond);
 
         return () => {
             socket.off('connect', () => setIsConnected(true));
@@ -29,6 +44,7 @@ function App() {
             socket.off('new_question', data => setLesson(data));
             socket.off('joined', data => setLesson(data));
             socket.off('updated_lesson', data => setLesson(data));
+            socket.off('refresh_question', respond);
         };
     }, []);
 
@@ -38,7 +54,7 @@ function App() {
             <Routes>
                 <Route path='/' element={<Homepage setLesson={setLesson} />} />
                 <Route path='/teacher' element={<Teacher setLesson={setLesson} />} />
-                <Route path='/pupil/:id' element={<Pupil lesson={lesson} />} />
+                <Route path='/pupil/:id' element={<Pupil lesson={lesson} provideResponse={provideResponse} />} />
                 <Route path='/teacher/lesson/:id' element={<Lesson lesson={lesson} />} />
             </Routes>
             <Footer />

@@ -4,7 +4,7 @@ import { Button, FloatingLabel, Form } from 'react-bootstrap';
 import QuestionModel from '../../../Utils/QuestionModel.js';
 import spinner from '../../../Assets/Spinner.svg';
 
-const AskQuestion = ({ _id, shortId }) => {
+const AskQuestion = ({ setAwaitResponses, _id, shortId }) => {
     const [text, setText] = useState('');
     const [isLoading, setIsLoading] = useState(false);
     const [currentQuestion, setCurrentQuestion] = useState('');

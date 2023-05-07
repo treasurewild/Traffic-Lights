@@ -79,8 +79,31 @@ io.on('connection', socket => {
         }
     });
 
+    // socket.on('ask_question', async data => {
+    //     const newQuestion = await Question.create({ shortId: data.question.shortId, text: data.question.text, responses: [] });
+    //     const lesson = await Lesson.findByIdAndUpdate(data._id, {
+    //         $push: {
+    //             questions: {
+    //                 $each: [newQuestion],
+    //                 $position: 0
+    //             }
+    //         }
+    //     }, { new: true })
+    //         .populate('questions');
+
+    //     // Send question to all except Teacher
+    //     socket.to(lesson.shortId).emit('new_question', lesson);
+    // });
+
     socket.on('ask_question', async data => {
-        const newQuestion = await Question.create({ shortId: data.question.shortId, text: data.question.text, responses: [] });
+        const newQuestion = await Question.create({
+            shortId: data.question.shortId,
+            text: data.question.text,
+            responses: [{
+                date: new Date(),
+                responses: []
+            }]
+        });
         const lesson = await Lesson.findByIdAndUpdate(data._id, {
             $push: {
                 questions: {
@@ -116,19 +139,43 @@ io.on('connection', socket => {
     });
 
     socket.on('fetch_lesson', async shortId => {
-        const lesson = await Lesson.findOne({ shortId: shortId })
-            .populate('questions');
-
-        socket.emit('updated_lesson', lesson);
+        await Lesson.findOne({ shortId: shortId })
+            .populate('questions')
+            .then(lesson => socket.emit('updated_lesson', lesson))
+            .catch(err => console.log(err));
     });
+
+    // socket.on('pupil_response', async data => {
+    //     await Question.findOneAndUpdate({ shortId: data.shortId }, {
+    //         $push: {
+    //             responses: data.response
+    //         }
+    //     });
+    // });
 
     socket.on('pupil_response', async data => {
-        await Question.findOneAndUpdate({ shortId: data.shortId }, {
-            $push: {
-                responses: data.response
-            }
-        });
+        await Question.findById(data.questionId)
+            .then(question => {
+                question.responses[0].responses.push(data.response)
+                question.save();
+            })
+            .catch(err => console.log(err));
     });
+
+    socket.on('refresh_question', async data => {
+        await Question.findById(data.id)
+            .then(question => {
+                question.responses.unshift({
+                    date: new Date(),
+                    responses: []
+                });
+                question.save();
+                socket.broadcast.emit('refresh_question', question);
+                // socket.to(data.shortId).emit('refresh_question', question);
+
+            })
+            .catch(err => console.log(err))
+    })
 
     socket.on('pupil_response_reset', async data => {
         const question = await Question.findOne({ shortId: data.shortId });

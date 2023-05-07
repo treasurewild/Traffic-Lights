@@ -2,13 +2,13 @@ import green from '../../../Assets/Green.svg';
 import amber from '../../../Assets/Amber.svg';
 import red from '../../../Assets/Red.svg';
 
-const Responses = ({ responses }) => {
+const Responses = ({ data }) => {
 
     const displayResponses = () => {
         // Sort responses to display Red-Amber-Green
-        responses?.sort();
+        data?.responses.sort();
 
-        const display = responses?.map((response, index) => {
+        const display = data?.responses.map((response, index) => {
             if (response === '3red')
                 return <img alt='red square' key={index} className='bar' src={red} />;
 

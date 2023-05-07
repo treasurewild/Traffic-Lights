@@ -18,13 +18,22 @@ const Question = ({ lesson, question }) => {
         event.preventDefault();
         setIsLoading(true);
 
-        const refreshQuestion = new QuestionModel(question.text);
-
         // Asks question and allows time for responses before fetching lesson data.
-        socket.timeout(10000).emit('ask_question', { _id: _id, question: refreshQuestion }, () => {
+        socket.timeout(10000).emit('refresh_question', { shortId: shortId, id: question._id }, () => {
             setIsLoading(false);
             socket.emit('fetch_lesson', shortId);
         });
+    }
+
+    const showResponses = () => {
+        const display = responses.map((data, index) => {
+            return (
+                <div key={index}>
+                    <Responses data={data} />
+                </div>
+            )
+        })
+        return display;
     }
 
     return (
@@ -32,7 +41,9 @@ const Question = ({ lesson, question }) => {
             <div className='d-flex flex-row'>
                 <h4 className='m-1 p-2'>{text}</h4>
             </div>
-            <Responses responses={responses} />
+            <div className='mb-2'>
+                {showResponses()}
+            </div>
             <Button className='align-self-center' variant='danger' size='sm' onClick={deleteQuestion}>
                 Delete
             </Button>
