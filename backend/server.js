@@ -7,8 +7,6 @@ import Lesson from './src/Models/Lesson.model.js'
 import mongoose from 'mongoose';
 import { config } from 'dotenv';
 import { users } from './src/Routes/Auth.route.js';
-import { roles } from './src/Routes/Roles.route.js';
-import { pupil } from './src/Routes/Pupil.route.js';
 import { teacher } from './src/Routes/Teacher.route.js';
 
 config({ path: `.env.${process.env.NODE_ENV}` })
@@ -22,8 +20,6 @@ app.use(cors());
 const server = http.createServer(app);
 
 app.use('/users', users);
-app.use('/pupil', pupil)
-app.use('/roles', roles);
 app.use('/teacher', teacher);
 
 const io = new Server(server, {

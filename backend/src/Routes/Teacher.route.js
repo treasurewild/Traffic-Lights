@@ -1,4 +1,5 @@
 import express from 'express';
+import { verifyToken } from '../Middlewares/authJWT.js';
 import Lesson from '../Models/Lesson.model.js';
 
 const router = express.Router();
@@ -14,9 +15,9 @@ router.get('/lesson/:id',
             .catch(err => res.status(400).send(err))
     });
 
-router.get('/lessons/:teacherId',
+router.get('/lessons', [verifyToken],
     async (req, res) => {
-        await Lesson.find({ teacher: req.params.teacherId })
+        await Lesson.find({ teacher: req.userId })
             .then(lessons => {
                 if (lessons.length > 0)
                     return res.status(200).send(lessons)
@@ -32,10 +33,10 @@ router.post('/new-lesson',
             .catch(err => res.status(400).send(err));
     });
 
-router.delete('/delete-lesson/:id',
+router.put('/delete-lesson', [verifyToken],
     async (req, res) => {
-        await Lesson.findByIdAndDelete(req.params.id)
-            .then(() => res.status(200))
+        await Lesson.findByIdAndDelete(req.body.lessonId)
+            .then(() => res.status(200).send())
             .catch(err => res.status(400).send(err));
     })
 

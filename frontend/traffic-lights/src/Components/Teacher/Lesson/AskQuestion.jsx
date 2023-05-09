@@ -35,7 +35,9 @@ const AskQuestion = ({ setAwaitResponses, _id, shortId }) => {
                         type="text"
                         placeholder='Ask a Question'
                         value={text}
-                        onChange={e => setText(e.target.value)} />
+                        onChange={e => setText(e.target.value)}
+                        required
+                    />
                 </FloatingLabel>
                 <Button className='m-1 btn-success' type="submit" disabled={isLoading}>Ask New Question</Button>
                 <Form.Label>Time to answer</Form.Label>

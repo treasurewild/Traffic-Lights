@@ -12,10 +12,8 @@ const Teacher = ({ setLesson }) => {
     const [showCreateLesson, setShowCreateLesson] = useState(false);
 
     const getLessonsHandler = async () => {
-        const res = await getLessons(user.id)
-
+        const res = await getLessons();
         const data = res.lessons ? res.lessons : [];
-
         setLessons(data);
     }
 
