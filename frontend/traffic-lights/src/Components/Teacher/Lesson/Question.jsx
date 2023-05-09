@@ -1,6 +1,5 @@
 import { useState } from 'react';
 import Responses from './Responses';
-import QuestionModel from '../../../Utils/QuestionModel';
 import { Button } from 'react-bootstrap';
 import { socket } from '../../../socket';
 
@@ -19,7 +18,7 @@ const Question = ({ lesson, question }) => {
         setIsLoading(true);
 
         // Asks question and allows time for responses before fetching lesson data.
-        socket.timeout(10000).emit('refresh_question', { shortId: shortId, id: question._id }, () => {
+        socket.timeout(10000).emit('refresh_question', { shortId: shortId, questionId: question._id, lessonId: _id }, () => {
             setIsLoading(false);
             socket.emit('fetch_lesson', shortId);
         });

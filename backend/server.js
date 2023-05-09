@@ -6,9 +6,9 @@ import cors from 'cors';
 import Lesson from './src/Models/Lesson.model.js'
 import mongoose from 'mongoose';
 import { config } from 'dotenv';
-import Question from './src/Models/Question.model.js';
 import { users } from './src/Routes/Auth.route.js';
 import { roles } from './src/Routes/Roles.route.js';
+import { pupil } from './src/Routes/Pupil.route.js';
 import { teacher } from './src/Routes/Teacher.route.js';
 
 config({ path: `.env.${process.env.NODE_ENV}` })
@@ -22,6 +22,7 @@ app.use(cors());
 const server = http.createServer(app);
 
 app.use('/users', users);
+app.use('/pupil', pupil)
 app.use('/roles', roles);
 app.use('/teacher', teacher);
 
@@ -79,32 +80,15 @@ io.on('connection', socket => {
         }
     });
 
-    // socket.on('ask_question', async data => {
-    //     const newQuestion = await Question.create({ shortId: data.question.shortId, text: data.question.text, responses: [] });
-    //     const lesson = await Lesson.findByIdAndUpdate(data._id, {
-    //         $push: {
-    //             questions: {
-    //                 $each: [newQuestion],
-    //                 $position: 0
-    //             }
-    //         }
-    //     }, { new: true })
-    //         .populate('questions');
-
-    //     // Send question to all except Teacher
-    //     socket.to(lesson.shortId).emit('new_question', lesson);
-    // });
-
     socket.on('ask_question', async data => {
-        const newQuestion = await Question.create({
-            shortId: data.question.shortId,
+        const newQuestion = {
             text: data.question.text,
             responses: [{
                 date: new Date(),
                 responses: []
             }]
-        });
-        const lesson = await Lesson.findByIdAndUpdate(data._id, {
+        };
+        await Lesson.findByIdAndUpdate(data._id, {
             $push: {
                 questions: {
                     $each: [newQuestion],
@@ -112,27 +96,26 @@ io.on('connection', socket => {
                 }
             }
         }, { new: true })
-            .populate('questions');
-
-        // Send question to all except Teacher
-        socket.to(lesson.shortId).emit('new_question', lesson);
+            // .then(lesson => socket.to(lesson.shortId).emit('refresh_question', lesson.questions[0]))
+            // Logging out of room issue, broadcasting for current testing
+            .then(lesson => socket.broadcast.emit('new_question', lesson))
+            .catch(err => console.log(err))
     });
 
     socket.on('delete_question', async data => {
-
-        const lesson = await Lesson.findByIdAndUpdate(data.lessonId, {
-            $pull: { questions: data.questionId }
-        }, { new: true })
-            .populate('questions');
-
-        await Question.findByIdAndDelete(data.questionId);
-
-        socket.to(lesson.shortId).emit('updated_lesson', lesson);
-        socket.emit('updated_lesson', lesson);
+        await Lesson.findById(data.lessonId)
+            .then(lesson => {
+                lesson.questions.id(data.questionId).deleteOne();
+                lesson.save();
+                socket.broadcast.emit('updated_lesson', lesson);
+                socket.emit('updated_lesson', lesson);
+            })
+            .catch(err => console.log(err));
     });
 
     socket.on('delete_lesson', async data => {
         await Lesson.findByIdAndDelete(data.id);
+        // Do I need to keep sending this data? Should be stored in state and only sent again if GET request received?
         const lessons = await Lesson.find({ teacher: data.teacher });
 
         socket.emit('updated_lessons', lessons);
@@ -140,51 +123,34 @@ io.on('connection', socket => {
 
     socket.on('fetch_lesson', async shortId => {
         await Lesson.findOne({ shortId: shortId })
-            .populate('questions')
             .then(lesson => socket.emit('updated_lesson', lesson))
             .catch(err => console.log(err));
     });
 
-    // socket.on('pupil_response', async data => {
-    //     await Question.findOneAndUpdate({ shortId: data.shortId }, {
-    //         $push: {
-    //             responses: data.response
-    //         }
-    //     });
-    // });
-
     socket.on('pupil_response', async data => {
-        await Question.findById(data.questionId)
-            .then(question => {
-                question.responses[0].responses.push(data.response)
-                question.save();
+        await Lesson.findById(data.lessonId)
+            .then(lesson => {
+                const question = lesson.questions.id(data.questionId);
+                question.responses[0].responses.push(data.response);
+                lesson.save();
             })
             .catch(err => console.log(err));
     });
 
     socket.on('refresh_question', async data => {
-        await Question.findById(data.id)
-            .then(question => {
+        await Lesson.findById(data.lessonId)
+            .then(lesson => {
+                const question = lesson.questions.id(data.questionId);
                 question.responses.unshift({
                     date: new Date(),
                     responses: []
                 });
-                question.save();
+                lesson.save();
                 socket.broadcast.emit('refresh_question', question);
-                // socket.to(data.shortId).emit('refresh_question', question);
-
+                //socket.to(lesson.shortId).emit('refresh_question', question);
             })
             .catch(err => console.log(err))
     })
-
-    socket.on('pupil_response_reset', async data => {
-        const question = await Question.findOne({ shortId: data.shortId });
-
-        const index = question.responses.indexOf(data.response);
-        question.responses.splice(index, 1);
-
-        question.save();
-    });
 
 });
 

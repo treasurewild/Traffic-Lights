@@ -3,38 +3,62 @@ import { useState } from 'react';
 import { socket } from '../../socket';
 import { Button, Modal } from 'react-bootstrap';
 
-const Pupil = ({ provideResponse, lesson }) => {
-    const { questions, shortId } = lesson;
+const Pupil = ({ lesson, provideResponse }) => {
+    const { questions, shortId, _id, learningObjective, subject, classCode } = lesson;
+
+    // Keeps a record of pupil responses to questions as Key-Value pairs.
+    const [answered, setAnswered] = useState({});
+    const [isClicked, setIsClicked] = useState(false);
 
     const refreshLesson = () => {
         socket.emit('fetch_lesson', shortId);
     }
 
     const sendResponse = (event) => {
-        socket.emit('pupil_response', { response: event.target.value, questionId: provideResponse._id });
-    }
+        event.preventDefault();
 
+        setIsClicked(true);
+
+        setAnswered({
+            ...answered,
+            [provideResponse._id]: event.target.value
+        })
+
+        setTimeout(() => {
+            setIsClicked(false)
+        }, 10000);
+
+        socket.emit('pupil_response', { response: event.target.value, questionId: provideResponse._id, lessonId: _id });
+    }
 
     return (
         <div className='main'>
             <h2>Pupil Page</h2>
+            <div className='alert alert-secondary'>
+                <h4>Learning Objective: {learningObjective}</h4>
+                <h4>Subject: {subject}</h4>
+                <h4>Class: {classCode}</h4>
+            </div>
             <Button type='button' size='sm' variant='secondary' onClick={refreshLesson}>Refresh Lesson Data</Button>
-            <Questions questions={questions} />
+            <Questions questions={questions} answered={answered} />
+
             <Modal
                 show={provideResponse.show}
                 backdrop="static"
-                keyboard={false}
+                keyboard={false} // Prevents ability to close modal by pressing Esc
+                size='lg'
+                centered
             >
                 <Modal.Header>
                     <Modal.Title>Provide a Response</Modal.Title>
                 </Modal.Header>
                 <Modal.Body>
-                    {provideResponse.text}
+                    <h3>{provideResponse.text}</h3>
                 </Modal.Body>
                 <Modal.Footer className='mx-auto'>
-                    <Button className='m-1' variant='success' value='1green' onClick={sendResponse} >Green</Button>
-                    <Button className='m-1' variant='warning' value='2amber' onClick={sendResponse} >Amber</Button>
-                    <Button className='m-1' variant='danger' value='3red' onClick={sendResponse} >Red</Button>
+                    <Button className='m-1' variant='success' size='lg' value='1green' onClick={isClicked ? null : sendResponse} disabled={isClicked} >Green</Button>
+                    <Button className='m-1' variant='warning' size='lg' value='2amber' onClick={isClicked ? null : sendResponse} disabled={isClicked} >Amber</Button>
+                    <Button className='m-1' variant='danger' size='lg' value='3red' onClick={isClicked ? null : sendResponse} disabled={isClicked} >Red</Button>
                 </Modal.Footer>
             </Modal>
 

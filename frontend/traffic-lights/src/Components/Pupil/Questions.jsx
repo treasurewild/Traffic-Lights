@@ -1,16 +1,14 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Question from './Question.jsx';
 
-const Questions = ({ questions }) => {
-
-    const [answered, setAnswered] = useState([]);
+const Questions = ({ questions, answered }) => {
 
     const displayQuestions = () => {
         if (questions?.length > 0) {
             const display = questions.map((question, index) => {
                 return (
                     <div key={index}>
-                        <Question question={question} answered={answered} setAnswered={setAnswered} />
+                        <Question question={question} answered={answered} />
                     </div>)
             });
             return display;

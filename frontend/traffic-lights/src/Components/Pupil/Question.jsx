@@ -1,54 +1,44 @@
 import React from 'react';
 import { Button } from 'react-bootstrap';
-import { socket } from '../../socket';
 
-const Question = ({ question, answered, setAnswered }) => {
+const Question = ({ question, answered }) => {
+    const { text, _id } = question;
 
-    // const index = answered.map(q => q.shortId).indexOf(question.shortId);
-
-    const sendResponse = (event) => {
-        // Needs to change for nested Responses
-        // setAnswered([
-        //     ...answered,
-        //     { shortId: question.shortId, response: event.target.value }
-        // ])
-        socket.emit('pupil_response', { response: event.target.value, questionId: question._id });
+    const displayResponse = () => {
+        // This feels like an inefficient way to solve this problem
+        if (answered[_id] === '1green')
+            return (
+                <div className='alert alert-success'>
+                    <h5 className='p-2'>{text} </h5>
+                    <Button type='button' variant='success' active>You responded Green</Button>
+                </div>
+            )
+        if (answered[_id] === '2amber')
+            return (
+                <div className='alert alert-warning'>
+                    <h5 className='p-2'>{text} </h5>
+                    <Button type='button' variant='warning' active>You responded Amber</Button>
+                </div>
+            )
+        if (answered[_id] === '3red')
+            return (
+                <div className='alert alert-danger'>
+                    <h5 className='p-2'>{text} </h5>
+                    <Button type='button' variant='danger' active>You responded Red</Button>
+                </div>
+            )
+        return (
+            <div className='alert alert-secondary'>
+                <h5 className='p-2'>{text} </h5>
+                <Button className='m-1' type='button' variant='secondary' >No response given</Button>
+            </div>
+        )
     }
 
-    // const displayResponse = () => {
-
-    //     if (answered[index].response === '1green')
-    //         return <Button type='button' variant='success' active>Green</Button>
-    //     if (answered[index].response === '2amber')
-    //         return <Button type='button' variant='warning' active>Amber</Button>
-    //     if (answered[index].response === '3red')
-    //         return <Button type='button' variant='danger' active>Red</Button>
-    // }
-
-    // const resetResponse = (e) => {
-    //     socket.emit('pupil_response_reset', { response: answered[index].response, shortId: question.shortId });
-
-    //     const copy = [...answered];
-    //     copy.splice(answered[index], 1);
-    //     setAnswered(copy);
-    // }
-
     return (
-        <div className='m-1 p-2 bg-dark text-light'>
-            <h5 className='p-2'>{question.text} </h5>
-            {/* {index === -1 ?
-                <> */}
-            <Button className='m-1' variant='success' value='1green' onClick={sendResponse} >Green</Button>
-            <Button className='m-1' variant='warning' value='2amber' onClick={sendResponse} >Amber</Button>
-            <Button className='m-1' variant='danger' value='3red' onClick={sendResponse} >Red</Button>
-            {/* </>
-                :
-                <>
-                    {displayResponse()}
-                    <Button className='m-1' variant='secondary' onClick={resetResponse} >Reset</Button>
-                </>
-            } */}
-        </div>
+        <>
+            {displayResponse()}
+        </>
     )
 }
 

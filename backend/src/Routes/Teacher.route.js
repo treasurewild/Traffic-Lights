@@ -6,7 +6,6 @@ const router = express.Router();
 router.get('/lesson/:id',
     async (req, res) => {
         await Lesson.findById(req.params.id)
-            .populate('questions')
             .then(lesson => {
                 if (!lesson)
                     return res.status(204)
