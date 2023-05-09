@@ -28,7 +28,7 @@ const Lesson = ({ lesson }) => {
                 </Col>
                 <Col><h5>Subject: <strong>{subject}</strong><br />Class: <strong>{classCode}</strong></h5></Col>
                 <Col md='4'>
-                    <h5 className='alert alert-secondary'>
+                    <h5 className='alert alert-light'>
                         Class code: &#160;
                         <Button size='sm' variant='secondary' onClick={() => navigator.clipboard.writeText(`${shortId}`)}>{shortId}</Button>
                     </h5>

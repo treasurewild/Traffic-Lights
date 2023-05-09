@@ -25,8 +25,6 @@ const Lessons = ({ lessons, getLessonsHandler, setLesson, showAll, setShowAll })
                 )
             });
         }
-
-
     }
 
     return (

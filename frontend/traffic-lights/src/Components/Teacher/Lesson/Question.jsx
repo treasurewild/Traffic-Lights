@@ -34,18 +34,18 @@ const Question = ({ isLoading, setIsLoading, lesson, question }) => {
     }
 
     return (
-        <div className='alert alert-success'>
-            <div className='d-flex flex-row'>
-                <h4 className='m-1 p-2'>{text}</h4>
-            </div>
+        <div className='alert alert-dark'>
+            <h4>{text}</h4>
+            <hr className='break' />
             <div className='mb-2'>
                 {showResponses()}
             </div>
-            <Button className='align-self-center' variant='danger' size='sm' onClick={deleteQuestion}>
-                Delete
-            </Button>
+
             <Button className='align-self-center' variant='secondary' size='sm' onClick={askQuestion} disabled={isLoading}>
                 {isLoading ? 'Fetching responses' : 'Ask Again'}
+            </Button>
+            <Button className='align-self-center' variant='danger' size='sm' onClick={deleteQuestion}>
+                Delete
             </Button>
         </div>
     )

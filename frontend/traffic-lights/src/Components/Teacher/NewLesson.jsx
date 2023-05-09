@@ -43,11 +43,13 @@ const NewLesson = ({ show, setShow, lessons, setLessons, setLesson }) => {
     return (
         <>
             <Modal show={show} onHide={() => setShow(false)}>
+
                 <Modal.Header closeButton>
                     <Modal.Title>
                         New Lesson
                     </Modal.Title>
                 </Modal.Header>
+
                 <Modal.Body>
                     <Form onSubmit={createLessonHandler}>
                         <Form.Group className="mb-3" >
