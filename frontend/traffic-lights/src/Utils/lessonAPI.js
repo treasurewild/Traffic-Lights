@@ -3,7 +3,7 @@ import authHeader from '../Utils/auth.header.js';
 
 export const getLesson = async lessonId => {
     try {
-        const res = await axios.get(`${process.env.REACT_APP_URL}/teacher/lesson/${lessonId}`);
+        const res = await axios.get(`${process.env.REACT_APP_URL}/teacher/lesson/${lessonId}`, { headers: authHeader() });
         if (res.data && res.status)
             return { lesson: res.data, status: res.status };
     }
@@ -44,7 +44,7 @@ export const getLessons = async () => {
 
 export const newLesson = async lesson => {
     try {
-        const res = await axios.post(`${process.env.REACT_APP_URL}/teacher/new-lesson`, lesson);
+        const res = await axios.post(`${process.env.REACT_APP_URL}/teacher/new-lesson`, lesson, { headers: authHeader() });
         if (res.data)
             return { lesson: res.data.lesson, status: res.status };
         return { message: 'There was a problem' }

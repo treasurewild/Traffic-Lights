@@ -3,11 +3,10 @@ import Responses from './Responses';
 import { Button } from 'react-bootstrap';
 import { socket } from '../../../socket';
 
-const Question = ({ lesson, question }) => {
+const Question = ({ isLoading, setIsLoading, lesson, question }) => {
     const { _id, shortId } = lesson;
 
     const { text, responses } = question;
-    const [loading, setIsLoading] = useState(false);
 
     const deleteQuestion = () => {
         socket.emit('delete_question', { lessonId: _id, questionId: question._id });
@@ -46,8 +45,8 @@ const Question = ({ lesson, question }) => {
             <Button className='align-self-center' variant='danger' size='sm' onClick={deleteQuestion}>
                 Delete
             </Button>
-            <Button className='align-self-center' variant='secondary' size='sm' onClick={askQuestion} disabled={loading}>
-                {loading ? 'Fetching responses' : 'Ask Again'}
+            <Button className='align-self-center' variant='secondary' size='sm' onClick={askQuestion} disabled={isLoading}>
+                {isLoading ? 'Fetching responses' : 'Ask Again'}
             </Button>
         </div>
     )

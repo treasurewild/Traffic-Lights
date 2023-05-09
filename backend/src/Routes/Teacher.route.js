@@ -4,7 +4,7 @@ import Lesson from '../Models/Lesson.model.js';
 
 const router = express.Router();
 
-router.get('/lesson/:id',
+router.get('/lesson/:id', [verifyToken],
     async (req, res) => {
         await Lesson.findById(req.params.id)
             .then(lesson => {
@@ -26,7 +26,7 @@ router.get('/lessons', [verifyToken],
             .catch(err => res.status(400).send(err));
     })
 
-router.post('/new-lesson',
+router.post('/new-lesson', [verifyToken],
     async (req, res) => {
         Lesson.create(req.body)
             .then(lesson => res.status(200).send({ lesson: lesson }))
