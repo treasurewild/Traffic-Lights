@@ -4,7 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { getLesson, deleteLesson } from '../../Utils/lessonAPI';
 
 const LessonSummary = ({ lesson, setLesson, getLessonsHandler }) => {
-    const { learningObjective, subject, level, shortId, _id, teacher } = lesson;
+    const { learningObjective, subject, level, shortId, _id } = lesson;
 
     const navigate = useNavigate();
 

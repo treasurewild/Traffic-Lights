@@ -12,11 +12,8 @@ import Lesson from './Components/Teacher/Lesson/Lesson';
 
 function App() {
 
-    const [isConnected, setIsConnected] = useState(socket.connected);
     const [lesson, setLesson] = useState({});
     const [provideResponse, setProvideResponse] = useState({ question: {}, show: false });
-
-
 
     useEffect(() => {
         const respond = question => {
@@ -38,16 +35,12 @@ function App() {
             respond(data.questions[0]);
         }
 
-        socket.on('connect', () => setIsConnected(true));
-        socket.on('disconnect', () => setIsConnected(false));
         socket.on('new_question', handleNewQuestion);
         socket.on('joined', data => setLesson(data));
         socket.on('updated_lesson', data => setLesson(data));
         socket.on('refresh_question', respond);
 
         return () => {
-            socket.off('connect', () => setIsConnected(true));
-            socket.off('disconnect', () => setIsConnected(false));
             socket.off('new_question', handleNewQuestion);
             socket.off('joined', data => setLesson(data));
             socket.off('updated_lesson', data => setLesson(data));
