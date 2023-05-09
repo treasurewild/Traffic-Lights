@@ -142,7 +142,10 @@ io.on('connection', socket => {
                     responses: []
                 });
                 lesson.save();
-                socket.broadcast.emit('refresh_question', question);
+                socket.broadcast.emit('refresh_question', question, answer => {
+                    question.responses[0].responses.push(data.response);
+                    lesson.save();
+                });
                 //socket.to(lesson.shortId).emit('refresh_question', question);
             })
             .catch(err => console.log(err))
