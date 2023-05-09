@@ -16,26 +16,28 @@ function App() {
     const [lesson, setLesson] = useState({});
     const [provideResponse, setProvideResponse] = useState({ question: {}, show: false });
 
-    const respond = question => {
-        setProvideResponse({
-            ...question,
-            show: true
-        });
 
-        setTimeout(() => {
-            setProvideResponse({
-                question: {},
-                show: false
-            });
-        }, 10000);
-    };
-
-    const handleNewQuestion = data => {
-        setLesson(data);
-        respond(data.questions[0]);
-    }
 
     useEffect(() => {
+        const respond = question => {
+            setProvideResponse({
+                ...question,
+                show: true
+            });
+
+            setTimeout(() => {
+                setProvideResponse({
+                    question: {},
+                    show: false
+                });
+            }, 10000);
+        };
+
+        const handleNewQuestion = data => {
+            setLesson(data);
+            respond(data.questions[0]);
+        }
+
         socket.on('connect', () => setIsConnected(true));
         socket.on('disconnect', () => setIsConnected(false));
         socket.on('new_question', handleNewQuestion);

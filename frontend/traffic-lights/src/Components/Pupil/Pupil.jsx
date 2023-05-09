@@ -1,7 +1,7 @@
 import Questions from './Questions.jsx';
 import { useState } from 'react';
 import { socket } from '../../socket';
-import { Button, Modal } from 'react-bootstrap';
+import { Button, Modal, Row, Col } from 'react-bootstrap';
 
 const Pupil = ({ lesson, provideResponse }) => {
     const { questions, shortId, _id, learningObjective, subject, classCode } = lesson;
@@ -34,11 +34,14 @@ const Pupil = ({ lesson, provideResponse }) => {
     return (
         <div className='main'>
             <h2>Pupil Page</h2>
-            <div className='alert alert-secondary'>
-                <h4>Learning Objective: {learningObjective}</h4>
-                <h4>Subject: {subject}</h4>
-                <h4>Class: {classCode}</h4>
-            </div>
+            <Row className='alert alert-info'>
+                <Col md='4'>
+                    <h6 className='text-muted'>Learning Objective:</h6>
+                    <h4>{learningObjective}</h4>
+                </Col>
+                <Col><h5>Subject: <strong>{subject}</strong><br />Class: <strong>{classCode}</strong><br />Code: <strong>{shortId}</strong></h5></Col>
+            </Row>
+
             <Button type='button' size='sm' variant='secondary' onClick={refreshLesson}>Refresh Lesson Data</Button>
             <Questions questions={questions} answered={answered} />
 

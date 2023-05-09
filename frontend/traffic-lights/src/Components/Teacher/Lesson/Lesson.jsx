@@ -1,5 +1,5 @@
 import { useNavigate } from 'react-router-dom';
-import { Button } from 'react-bootstrap';
+import { Button, Row, Col } from 'react-bootstrap';
 import AskQuestion from './AskQuestion';
 import Questions from './Questions';
 import { socket } from '../../../socket';
@@ -18,16 +18,24 @@ const Lesson = ({ lesson }) => {
             <Button className='m-1 align-self-center' variant='secondary' size='sm' onClick={() => navigate('/teacher')} >
                 &#60; Back to Lessons
             </Button>
-            <h3 className='alert alert-secondary'>Class code: {shortId}&#160;
-                <Button size='sm' variant='secondary' onClick={() => navigator.clipboard.writeText(`${shortId}`)}>Copy Code</Button>
-            </h3>
 
-            <h5>Learning Objective: {learningObjective}</h5>
-            <h6>Subject: <strong>{subject}</strong> Class: <strong>{classCode}</strong></h6>
+            <Row className='alert alert-info'>
+                <Col md='4'>
+                    <h6 className='text-muted'>Learning Objective:</h6>
+                    <h4>{learningObjective}</h4>
+                </Col>
+                <Col><h5>Subject: <strong>{subject}</strong><br />Class: <strong>{classCode}</strong></h5></Col>
+                <Col md='4'>
+                    <h5 className='alert alert-secondary'>
+                        Class code: &#160;
+                        <Button size='sm' variant='secondary' onClick={() => navigator.clipboard.writeText(`${shortId}`)}>{shortId}</Button>
+                    </h5>
+                </Col>
+            </Row>
             <Button type='button' className='mb-2' size='sm' variant='secondary' onClick={refreshLesson}>Refresh Lesson Data</Button>
             <AskQuestion shortId={shortId} _id={_id} />
             <Questions lesson={lesson} />
-        </div>
+        </div >
     )
 }
 
