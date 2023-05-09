@@ -12,6 +12,7 @@ const LessonSummary = ({ lesson, setLesson, getLessonsHandler }) => {
         e.preventDefault();
 
         const res = await getLesson(_id);
+
         if (res.status === 200) {
             setLesson(res.lesson);
             navigate(`/teacher/lesson/${shortId}`);

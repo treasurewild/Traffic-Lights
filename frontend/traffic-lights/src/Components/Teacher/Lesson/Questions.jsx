@@ -1,7 +1,7 @@
 import React from 'react';
 import Question from './Question.jsx';
 
-const Questions = ({ lesson }) => {
+const Questions = ({ isLoading, setIsLoading, lesson }) => {
     const { questions } = lesson;
 
     const displayQuestions = () => {
@@ -9,7 +9,7 @@ const Questions = ({ lesson }) => {
             const display = questions.map((question, index) => {
                 return (
                     <div key={index}>
-                        <Question lesson={lesson} question={question} />
+                        <Question isLoading={isLoading} setIsLoading={setIsLoading} lesson={lesson} question={question} />
                     </div>)
             });
             return display;

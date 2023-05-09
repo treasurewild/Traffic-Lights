@@ -1,12 +1,11 @@
 import React, { useState } from 'react';
 import { socket } from '../../../socket.js';
-import { Button, FloatingLabel, Form } from 'react-bootstrap';
+import { Button, FloatingLabel, Form, ButtonGroup, DropdownButton, Dropdown } from 'react-bootstrap';
 import QuestionModel from '../../../Utils/QuestionModel.js';
 import spinner from '../../../Assets/Spinner.svg';
 
-const AskQuestion = ({ setAwaitResponses, _id, shortId }) => {
+const AskQuestion = ({ isLoading, setIsLoading, _id, shortId }) => {
     const [text, setText] = useState('');
-    const [isLoading, setIsLoading] = useState(false);
     const [currentQuestion, setCurrentQuestion] = useState('');
     const [timer, setTimer] = useState(10000);
 
@@ -35,17 +34,21 @@ const AskQuestion = ({ setAwaitResponses, _id, shortId }) => {
                         type="text"
                         placeholder='Ask a Question'
                         value={text}
-                        onChange={e => setText(e.target.value)} />
+                        onChange={e => setText(e.target.value)}
+                        required
+                    />
                 </FloatingLabel>
-                <Button className='m-1 btn-success' type="submit" disabled={isLoading}>Ask New Question</Button>
-                <Form.Label>Time to answer</Form.Label>
-                <Form.Select size='sm' defaultValue='10' disabled={isLoading} onChange={(e) => setTimer(e.target.value * 1000)}>
-                    <option value="5">5 seconds</option>
-                    <option value="10">10 seconds</option>
-                    <option value="20">20 seconds</option>
-                </Form.Select>
+                <ButtonGroup  >
+                    <Button variant='success' type="submit" disabled={isLoading}>Ask New Question</Button>
+                    <DropdownButton variant='secondary' as={ButtonGroup} title={`Time to answer: ${timer / 1000} seconds`} id="bg-nested-dropdown" disabled={isLoading}>
+                        <Dropdown.Item onClick={() => setTimer(5000)}>5 Seconds</Dropdown.Item>
+                        <Dropdown.Item onClick={() => setTimer(10000)}>10 Seconds</Dropdown.Item>
+                        <Dropdown.Item onClick={() => setTimer(20000)}>20 Seconds</Dropdown.Item>
+                        <Dropdown.Item onClick={() => setTimer(30000)}>30 Seconds</Dropdown.Item>
+                    </DropdownButton>
+                </ButtonGroup>
             </Form>
-            {isLoading &&
+            {isLoading && currentQuestion &&
                 <>
                     <p className='text-muted'><img src={spinner} className='rotate' alt="spinner" width="20" height="20" /> Waiting for responses to: {currentQuestion}</p>
                 </>

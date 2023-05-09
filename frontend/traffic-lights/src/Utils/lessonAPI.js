@@ -1,8 +1,9 @@
 import axios from 'axios';
+import authHeader from '../Utils/auth.header.js';
 
 export const getLesson = async lessonId => {
     try {
-        const res = await axios.get(`${process.env.REACT_APP_URL}/teacher/lesson/${lessonId}`);
+        const res = await axios.get(`${process.env.REACT_APP_URL}/teacher/lesson/${lessonId}`, { headers: authHeader() });
         if (res.data && res.status)
             return { lesson: res.data, status: res.status };
     }
@@ -28,11 +29,10 @@ export const getLessonPupil = async lessonId => {
     }
 }
 
-export const getLessons = async teacherId => {
+export const getLessons = async () => {
     try {
-        const res = await axios.get(`${process.env.REACT_APP_URL}/teacher/lessons/${teacherId}`);
-        if (res.data && res.status)
-            return { lessons: res.data, status: res.status };
+        const res = await axios.get(`${process.env.REACT_APP_URL}/teacher/lessons`, { headers: authHeader() });
+        return { lessons: res.data, status: res.status };
     }
     catch (err) {
         return {
@@ -44,7 +44,7 @@ export const getLessons = async teacherId => {
 
 export const newLesson = async lesson => {
     try {
-        const res = await axios.post(`${process.env.REACT_APP_URL}/teacher/new-lesson`, lesson);
+        const res = await axios.post(`${process.env.REACT_APP_URL}/teacher/new-lesson`, lesson, { headers: authHeader() });
         if (res.data)
             return { lesson: res.data.lesson, status: res.status };
         return { message: 'There was a problem' }
@@ -58,11 +58,8 @@ export const newLesson = async lesson => {
 
 export const deleteLesson = async id => {
     try {
-        const res = await axios.delete(`${process.env.REACT_APP_URL}/teacher/delete-lesson/${id}`);
-        if (res.status === 200) {
-            return { status: res.status }
-        }
-        return { message: 'There was a problem' }
+        const res = await axios.put(`${process.env.REACT_APP_URL}/teacher/delete-lesson`, { lessonId: id }, { headers: authHeader() });
+        return { status: res.status }
     }
     catch (err) {
         return {

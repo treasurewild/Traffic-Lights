@@ -1,4 +1,5 @@
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 import { Button, Row, Col } from 'react-bootstrap';
 import AskQuestion from './AskQuestion';
 import Questions from './Questions';
@@ -8,6 +9,7 @@ const Lesson = ({ lesson }) => {
 
     const navigate = useNavigate();
     const { shortId, _id, learningObjective, classCode, subject } = lesson;
+    const [isLoading, setIsLoading] = useState(false);
 
     const refreshLesson = () => {
         socket.emit('fetch_lesson', shortId);
@@ -33,8 +35,8 @@ const Lesson = ({ lesson }) => {
                 </Col>
             </Row>
             <Button type='button' className='mb-2' size='sm' variant='secondary' onClick={refreshLesson}>Refresh Lesson Data</Button>
-            <AskQuestion shortId={shortId} _id={_id} />
-            <Questions lesson={lesson} />
+            <AskQuestion isLoading={isLoading} setIsLoading={setIsLoading} shortId={shortId} _id={_id} />
+            <Questions isLoading={isLoading} setIsLoading={setIsLoading} lesson={lesson} />
         </div >
     )
 }

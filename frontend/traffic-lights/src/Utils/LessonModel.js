@@ -1,6 +1,9 @@
 import ShortUniqueId from 'short-unique-id';
 
-const uid = new ShortUniqueId({ length: 6 });
+const uid = new ShortUniqueId({
+    dictionary: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
+    length: 6
+});
 
 export default class LessonModel {
 

@@ -10,7 +10,6 @@ router.post('/register', (req, res) => {
     const user = new User({
         name: req.body.name,
         email: req.body.email,
-        handle: req.body.handle,
         password: bcrypt.hashSync(req.body.password, 8)
     });
 
@@ -38,18 +37,11 @@ router.post('/signin', (req, res) => {
                 });
             }
 
-            const authorities = [];
-
-            for (let i = 0; i < user.roles.length; i++) {
-                authorities.push(`ROLE_${user.roles[i].name.toUpperCase()}`);
-            };
-
             const token = jwt.sign({ id: user.id }, process.env.DB_URI, { expiresIn: 86400 });
 
             res.status(200).send({
                 id: user._id,
                 name: user.name,
-                roles: authorities,
                 accessToken: token
             });
 
