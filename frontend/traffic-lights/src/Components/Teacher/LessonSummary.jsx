@@ -1,6 +1,7 @@
 import React from 'react';
 import { Card, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
+import { socket } from '../../socket';
 import { getLesson, deleteLesson } from '../../Utils/lessonAPI';
 
 const LessonSummary = ({ lesson, setLesson, getLessonsHandler }) => {
@@ -15,6 +16,7 @@ const LessonSummary = ({ lesson, setLesson, getLessonsHandler }) => {
 
         if (res.status === 200) {
             setLesson(res.lesson);
+            socket.emit('join', shortId);
             navigate(`/teacher/lesson/${shortId}`);
         }
     }

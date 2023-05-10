@@ -1,11 +1,15 @@
-import express from 'express';
 import bodyParser from 'body-parser';
-import http from 'http';
-import { Server } from 'socket.io';
 import cors from 'cors';
-import Lesson from './src/Models/Lesson.model.js'
-import mongoose from 'mongoose';
 import { config } from 'dotenv';
+import express from 'express';
+import http from 'http';
+import mongoose from 'mongoose';
+import { Server } from 'socket.io';
+
+// Models
+import Lesson from './src/Models/Lesson.model.js'
+
+// Routes
 import { users } from './src/Routes/Auth.route.js';
 import { pupil } from './src/Routes/Pupil.route.js';
 import { teacher } from './src/Routes/Teacher.route.js';
@@ -16,7 +20,6 @@ const port = process.env.PORT;
 const app = express();
 app.use(bodyParser.json());
 app.use(cors());
-
 
 const server = http.createServer(app);
 
@@ -30,6 +33,7 @@ const io = new Server(server, {
     }
 });
 
+// Creating socket and response criteria
 io.on('connection', socket => {
     console.log('New user connected.');
 
@@ -40,40 +44,44 @@ io.on('connection', socket => {
     // Joining Lesson as a teacher
     socket.on('join', lessonId => {
         Lesson.findOne({ shortId: lessonId })
-            .then(lesson => {
+            .then(() => {
                 socket.join(lessonId);
                 socket.activeRoom = lessonId;
             })
-            .catch(e => {
-                console.error(e);
+            .catch(err => {
+                console.error(err);
             })
     });
 
-    // Joining Lesson as a pupil
-    socket.on('pupil_join', lessonId => {
-        socket.join(lessonId);
-        socket.activeRoom = lessonId;
-    })
-
     socket.on('ask_question', data => {
         const newQuestion = {
-            text: data.question.text,
+            text: data.question,
             responses: [{
                 date: new Date(),
                 responses: []
             }]
         };
-        Lesson.findByIdAndUpdate(data._id, {
-            $push: {
-                questions: {
-                    $each: [newQuestion],
-                    $position: 0
-                }
-            }
-        }, { new: true })
-            // Logging out of room issue, broadcasting for current testing
-            .then(lesson => socket.broadcast.emit('new_question', { lesson: lesson, timer: data.timer }))
+
+        Lesson.findById(data._id)
+            .then(lesson => {
+
+                // Places new question at position 0 in the array
+                lesson.questions.unshift(newQuestion);
+                lesson.save();
+                socket.to(lesson.shortId).emit('refresh_question', { text: data.question, questionId: lesson.questions[0]._id, timer: data.timer });
+            })
             .catch(err => console.log(err))
+
+        // Lesson.findByIdAndUpdate(data._id, {
+        //     $push: {
+        //         questions: {
+        //             $each: [newQuestion],
+        //             $position: 0
+        //         }
+        //     }
+        // }, { new: true })
+        //.then(lesson => socket.to(lesson.shortId).emit('new_question', { lesson: lesson, timer: data.timer }))
+        //.catch(err => console.log(err))
     });
 
     socket.on('delete_question', data => {
@@ -129,13 +137,13 @@ io.on('connection', socket => {
         Lesson.findById(data.lessonId)
             .then(lesson => {
                 const question = lesson.questions.id(data.questionId);
+                // Places new question at position 0 in the array
                 question.responses.unshift({
                     date: new Date(),
                     responses: []
                 });
                 lesson.save();
-                socket.broadcast.emit('refresh_question', { question: question, timer: data.timer });
-                //socket.to(lesson.shortId).emit('refresh_question', question);
+                io.to(lesson.shortId).emit('refresh_question', { text: question.text, questionId: question._id, timer: data.timer });
             })
             .catch(err => console.log(err))
     })

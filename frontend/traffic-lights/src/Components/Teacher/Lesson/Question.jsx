@@ -12,8 +12,8 @@ const Question = ({ timer, isLoading, setIsLoading, lesson, question }) => {
         socket.emit('delete_question', { lessonId: _id, questionId: question._id });
     }
 
-    const askQuestion = (event) => {
-        event.preventDefault();
+    const askAgain = (e) => {
+        e.preventDefault();
         setIsLoading(true);
 
         // Asks question and allows time for responses before fetching lesson data.
@@ -42,7 +42,7 @@ const Question = ({ timer, isLoading, setIsLoading, lesson, question }) => {
                 {showResponses()}
             </div>
 
-            <Button className='align-self-center' variant='secondary' size='sm' onClick={askQuestion} disabled={isLoading}>
+            <Button className='align-self-center' variant='secondary' size='sm' onClick={askAgain} disabled={isLoading}>
                 {isLoading ?
                     <>
                         <img src={spinner} className='rotate' alt="spinner" width="20" height="20" />
@@ -51,7 +51,7 @@ const Question = ({ timer, isLoading, setIsLoading, lesson, question }) => {
                     'Ask Again'
                 }
             </Button>
-            <Button className='align-self-center' variant='danger' size='sm' onClick={deleteQuestion}>
+            <Button className='m-1 align-self-center' variant='danger' size='sm' onClick={deleteQuestion}>
                 Delete
             </Button>
         </div>

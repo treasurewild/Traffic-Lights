@@ -18,7 +18,7 @@ function App() {
     useEffect(() => {
         const respond = data => {
             setProvideResponse({
-                ...data.question,
+                ...data,
                 show: true,
                 timer: data.timer
             });
@@ -29,21 +29,16 @@ function App() {
                     show: false,
                 });
             }, data.timer);
+
+            socket.emit('fetch_lesson', lesson.shortId);
         };
 
-        const handleNewQuestion = data => {
-            setLesson(data.lesson);
-            respond(data.lesson.questions[0], data.timer);
-        }
-
-        socket.on('new_question', handleNewQuestion);
-        socket.on('joined', data => setLesson(data));
+        //socket.on('new_question', handleNewQuestion);
         socket.on('updated_lesson', data => setLesson(data));
         socket.on('refresh_question', respond);
 
         return () => {
-            socket.off('new_question', handleNewQuestion);
-            socket.off('joined', data => setLesson(data));
+            //socket.off('new_question', handleNewQuestion);
             socket.off('updated_lesson', data => setLesson(data));
             socket.off('refresh_question', respond);
         };

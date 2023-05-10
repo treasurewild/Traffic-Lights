@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { Button, FloatingLabel, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { socket } from '../../socket';
@@ -14,13 +14,14 @@ const Homepage = ({ setLesson, setLessons }) => {
     const [message, setMessage] = useState('');
 
     const joinLessonPupil = async (e) => {
-        //socket.emit('pupil_join', pupilLesson);
+
         e.preventDefault();
 
         const res = await getLessonPupil(pupilLesson);
 
         if (res.status === 200) {
             setLesson(res.lesson);
+            socket.emit('join', pupilLesson);
             navigate(`/pupil/${pupilLesson}`);
             return;
         }
