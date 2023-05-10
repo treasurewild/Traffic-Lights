@@ -1,6 +1,7 @@
 import Responses from './Responses';
 import { Button } from 'react-bootstrap';
 import { socket } from '../../../socket';
+import spinner from '../../../Assets/Spinner.svg';
 
 const Question = ({ timer, isLoading, setIsLoading, lesson, question }) => {
     const { _id, shortId } = lesson;
@@ -42,7 +43,13 @@ const Question = ({ timer, isLoading, setIsLoading, lesson, question }) => {
             </div>
 
             <Button className='align-self-center' variant='secondary' size='sm' onClick={askQuestion} disabled={isLoading}>
-                {isLoading ? 'Fetching responses' : 'Ask Again'}
+                {isLoading ?
+                    <>
+                        <img src={spinner} className='rotate' alt="spinner" width="20" height="20" />
+                    </>
+                    :
+                    'Ask Again'
+                }
             </Button>
             <Button className='align-self-center' variant='danger' size='sm' onClick={deleteQuestion}>
                 Delete

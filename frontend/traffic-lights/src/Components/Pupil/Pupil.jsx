@@ -1,9 +1,12 @@
 import Questions from './Questions.jsx';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { socket } from '../../socket';
 import { Button, Modal, Row, Col } from 'react-bootstrap';
 
 const Pupil = ({ lesson, provideResponse }) => {
+    const navigate = useNavigate();
+
     const { questions, shortId, _id, learningObjective, subject, classCode } = lesson;
 
     // Keeps a record of pupil responses to questions as Key-Value pairs.
@@ -31,11 +34,19 @@ const Pupil = ({ lesson, provideResponse }) => {
         socket.emit('pupil_response', { response: event.target.value, questionId: provideResponse._id, lessonId: _id });
     }
 
+    useEffect(() => {
+        // Redirects to homepage if no lesson data available
+        if (!lesson._id) {
+            navigate('/');
+            return;
+        }
+    }, [])
+
     return (
         <div className='main'>
             <h2>Pupil Page</h2>
             <Row className='alert alert-info'>
-                <Col md='4'>
+                <Col md='8'>
                     <h6 className='text-muted'>Learning Objective:</h6>
                     <h4>{learningObjective}</h4>
                 </Col>

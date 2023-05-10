@@ -10,21 +10,21 @@ const Question = ({ question, answered }) => {
             return (
                 <div className='alert alert-success'>
                     <h5 className='p-2'>{text} </h5>
-                    <Button type='button' variant='success' active>You responded Green</Button>
+                    <Button type='button' variant='success' active='true'>You responded Green</Button>
                 </div>
             )
         if (answered[_id] === '2amber')
             return (
                 <div className='alert alert-warning'>
                     <h5 className='p-2'>{text} </h5>
-                    <Button type='button' variant='warning' active>You responded Amber</Button>
+                    <Button type='button' variant='warning' active='true'>You responded Amber</Button>
                 </div>
             )
         if (answered[_id] === '3red')
             return (
                 <div className='alert alert-danger'>
                     <h5 className='p-2'>{text} </h5>
-                    <Button type='button' variant='danger' active>You responded Red</Button>
+                    <Button type='button' variant='danger' active='true'>You responded Red</Button>
                 </div>
             )
         return (

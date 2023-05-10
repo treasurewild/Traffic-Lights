@@ -23,15 +23,17 @@ const Lesson = ({ lesson }) => {
             </Button>
 
             <Row className='alert alert-info'>
-                <Col md='4'>
+                <Col md='6'>
                     <h6 className='text-muted'>Learning Objective:</h6>
                     <h4>{learningObjective}</h4>
                 </Col>
-                <Col><h5>Subject: <strong>{subject}</strong><br />Class: <strong>{classCode}</strong></h5></Col>
-                <Col md='4'>
+                <Col md='2'>
+                    <h5>Subject: <strong>{subject}</strong><br />Class: <strong>{classCode}</strong></h5>
+                </Col>
+                <Col >
                     <h5 className='alert alert-light'>
                         Class code: &#160;
-                        <Button size='sm' variant='secondary' onClick={() => navigator.clipboard.writeText(`${shortId}`)}>{shortId}</Button>
+                        <Button size='lg' variant='secondary' onClick={() => navigator.clipboard.writeText(`${shortId}`)}>{shortId}</Button>
                     </h5>
                 </Col>
             </Row>

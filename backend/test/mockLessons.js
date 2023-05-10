@@ -5,7 +5,19 @@ export const mockLessons =
             subject: 'A',
             level: 'A',
             classCode: '9',
-            questions: [],
+            questions: [
+                {
+                    _id: '14118f2d2dc0942d5e749885',
+                    text: 'Test Question',
+                    responses: {
+                        _id: '14118f2d2dc0942d5e743885',
+                        date: 'Wed May 10 2023 11:09:11 GMT+0100 (British Summer Time)',
+                        responses: [
+                            '1green', '2amber', '3red'
+                        ]
+                    }
+                }
+            ],
             shortId: '111111',
             _id: '14118f2d5fc0942d5e749885',
             teacher: '64118f2d5fc0942d5e749885'
