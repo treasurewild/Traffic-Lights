@@ -44,7 +44,6 @@ const Pupil = ({ lesson, provideResponse }) => {
 
     return (
         <div className='main'>
-            <h2>Pupil Page</h2>
             <Row className='alert alert-info'>
                 <Col md='8'>
                     <h6 className='text-muted'>Learning Objective:</h6>
