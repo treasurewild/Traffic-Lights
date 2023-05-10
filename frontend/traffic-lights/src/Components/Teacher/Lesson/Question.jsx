@@ -2,7 +2,7 @@ import Responses from './Responses';
 import { Button } from 'react-bootstrap';
 import { socket } from '../../../socket';
 
-const Question = ({ isLoading, setIsLoading, lesson, question }) => {
+const Question = ({ timer, isLoading, setIsLoading, lesson, question }) => {
     const { _id, shortId } = lesson;
 
     const { text, responses } = question;
@@ -16,7 +16,7 @@ const Question = ({ isLoading, setIsLoading, lesson, question }) => {
         setIsLoading(true);
 
         // Asks question and allows time for responses before fetching lesson data.
-        socket.timeout(10000).emit('refresh_question', { shortId: shortId, questionId: question._id, lessonId: _id }, () => {
+        socket.timeout(timer).emit('refresh_question', { shortId: shortId, questionId: question._id, lessonId: _id, timer: timer }, () => {
             setIsLoading(false);
             socket.emit('fetch_lesson', shortId);
         });
@@ -26,7 +26,7 @@ const Question = ({ isLoading, setIsLoading, lesson, question }) => {
         const display = responses.map((data, index) => {
             return (
                 <div key={index}>
-                    <Responses data={data} />
+                    <Responses lessonId={_id} questionId={question._id} data={data} />
                 </div>
             )
         })

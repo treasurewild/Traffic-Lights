@@ -16,16 +16,16 @@ const Header = () => {
     }
 
     return (
-        <Navbar className="header navbar bg-light p-2">
+        <Navbar className="header d-flex justify-content-between navbar bg-light p-2">
             <Navbar.Brand className="navbar-brand" href="/">
                 <img src={logo} alt="Logo" width="90" height="30" className="d-inline-block align-text-top" />
                 Traffic Lights
             </Navbar.Brand>
             {user?.accessToken &&
-                <>
-                    <Navbar.Text>You are logged in as: {user.name}</Navbar.Text>
-                    <Button variant='secondary' size='sm' className='m-1' onClick={logOut}>Log Out</Button>
-                </>
+                <div>
+                    <Navbar.Text>You are logged in as: <strong>{user.name} </strong></Navbar.Text>
+                    <Button variant='secondary' size='sm' onClick={logOut}>Log Out</Button>
+                </div>
             }
         </Navbar>
     )

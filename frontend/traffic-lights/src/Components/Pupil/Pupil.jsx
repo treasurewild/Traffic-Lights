@@ -26,7 +26,7 @@ const Pupil = ({ lesson, provideResponse }) => {
 
         setTimeout(() => {
             setIsClicked(false)
-        }, 10000);
+        }, provideResponse.timer);
 
         socket.emit('pupil_response', { response: event.target.value, questionId: provideResponse._id, lessonId: _id });
     }

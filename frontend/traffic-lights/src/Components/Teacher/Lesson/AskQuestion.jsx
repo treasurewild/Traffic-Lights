@@ -4,10 +4,9 @@ import { Button, FloatingLabel, Form, ButtonGroup, DropdownButton, Dropdown } fr
 import QuestionModel from '../../../Utils/QuestionModel.js';
 import spinner from '../../../Assets/Spinner.svg';
 
-const AskQuestion = ({ isLoading, setIsLoading, _id, shortId }) => {
+const AskQuestion = ({ timer, setTimer, isLoading, setIsLoading, _id, shortId }) => {
     const [text, setText] = useState('');
     const [currentQuestion, setCurrentQuestion] = useState('');
-    const [timer, setTimer] = useState(10000);
 
     const askQuestion = (event) => {
         event.preventDefault();
@@ -17,7 +16,7 @@ const AskQuestion = ({ isLoading, setIsLoading, _id, shortId }) => {
         const question = new QuestionModel(text);
 
         // Asks question and allows time for responses before fetching lesson data.
-        socket.timeout(timer).emit('ask_question', { _id: _id, question: question }, () => {
+        socket.timeout(timer).emit('ask_question', { _id: _id, question: question, timer: timer }, () => {
             setIsLoading(false);
             setCurrentQuestion('');
             socket.emit('fetch_lesson', shortId);

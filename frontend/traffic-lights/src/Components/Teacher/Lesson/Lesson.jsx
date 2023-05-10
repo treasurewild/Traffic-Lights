@@ -10,6 +10,7 @@ const Lesson = ({ lesson }) => {
     const navigate = useNavigate();
     const { shortId, _id, learningObjective, classCode, subject } = lesson;
     const [isLoading, setIsLoading] = useState(false);
+    const [timer, setTimer] = useState(10000);
 
     const refreshLesson = () => {
         socket.emit('fetch_lesson', shortId);
@@ -35,8 +36,8 @@ const Lesson = ({ lesson }) => {
                 </Col>
             </Row>
             <Button type='button' className='mb-2' size='sm' variant='secondary' onClick={refreshLesson}>Refresh Lesson Data</Button>
-            <AskQuestion isLoading={isLoading} setIsLoading={setIsLoading} shortId={shortId} _id={_id} />
-            <Questions isLoading={isLoading} setIsLoading={setIsLoading} lesson={lesson} />
+            <AskQuestion timer={timer} setTimer={setTimer} isLoading={isLoading} setIsLoading={setIsLoading} shortId={shortId} _id={_id} />
+            <Questions timer={timer} isLoading={isLoading} setIsLoading={setIsLoading} lesson={lesson} />
         </div >
     )
 }
