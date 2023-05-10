@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client';
 
-const URL = 'http://localhost:5000';
+const URL = 'https://traffic-lights.onrender.com:5000';
 
 export const socket = io(URL);
