@@ -4,14 +4,14 @@ import Lesson from '../Models/Lesson.model.js';
 const router = express.Router();
 
 router.get('/:id',
-    async (req, res) => {
-        await Lesson.find({ shortId: req.params.id })
+    (req, res) => {
+        Lesson.findOne({ shortId: req.params.id })
             .then(lesson => {
                 if (!lesson)
-                    return res.status(204)
-                return res.status(200).send(lesson)
+                    return res.status(204).send();
+                return res.status(200).send(lesson);
             })
-            .catch(err => res.status(400).send(err))
+            .catch(err => res.status(400).send(err));
     });
 
 export { router as pupil };

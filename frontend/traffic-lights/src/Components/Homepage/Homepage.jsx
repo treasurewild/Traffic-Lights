@@ -3,6 +3,7 @@ import { Button, FloatingLabel, Form } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { socket } from '../../socket';
 import UserPanel from './UserPanel';
+import { getLessonPupil } from '../../Utils/lessonAPI';
 
 const Homepage = ({ setLesson, setLessons }) => {
 
@@ -10,18 +11,24 @@ const Homepage = ({ setLesson, setLessons }) => {
 
     const navigate = useNavigate();
     const [pupilLesson, setPupilLesson] = useState('');
+    const [message, setMessage] = useState('');
 
-    const joinLessonPupil = () => {
+    const joinLessonPupil = async (e) => {
+        //socket.emit('pupil_join', pupilLesson);
+        e.preventDefault();
 
-        socket.emit('pupil_join', pupilLesson, response => {
-            setLesson(response.lesson);
-        });
+        const res = await getLessonPupil(pupilLesson);
 
-        navigate(`/pupil/${pupilLesson}`);
-    }
+        if (res.status === 200) {
+            setLesson(res.lesson);
+            navigate(`/pupil/${pupilLesson}`);
+            return;
+        }
 
-    const goToLessons = () => {
-        navigate('/teacher')
+        setMessage(res.message);
+        setTimeout(() => {
+            setMessage('');
+        }, 3000);
     }
 
     return (
@@ -35,7 +42,7 @@ const Homepage = ({ setLesson, setLessons }) => {
             </div>
             {user?.accessToken ?
                 <div className='d-grid'>
-                    <Button variant='warning' className='mb-3' size='lg' onClick={goToLessons}>Go to Lessons</Button>
+                    <Button variant='warning' className='mb-3' size='lg' onClick={() => navigate('/teacher')}>Go to Lessons</Button>
                 </div>
                 :
                 <UserPanel setLessons={setLessons} />
@@ -50,6 +57,7 @@ const Homepage = ({ setLesson, setLessons }) => {
                     <Button className='mt-1 btn-success' type='submit'>
                         Join Lesson
                     </Button>
+                    {message && <p className='m-1 alert alert-danger'>{message}</p>}
                 </Form>
             </div>
             <div className='alert alert-secondary'>

@@ -15,18 +15,17 @@ export const getLesson = async lessonId => {
     }
 }
 
-export const getLessonPupil = async lessonId => {
+export const getLessonPupil = async lessonShortId => {
     try {
-        const res = await axios.get(`${process.env.REACT_APP_URL}/pupil/${lessonId}`);
-        if (res.data && res.status)
-            return { lesson: res.data, status: res.status };
+        const res = await axios.get(`${process.env.REACT_APP_URL}/pupil/${lessonShortId}`)
+        return { message: 'Lesson not found', lesson: res.data, status: res.status }
     }
     catch (err) {
         return {
             lesson: {},
             status: err.response?.status ?? 204
         }
-    }
+    };
 }
 
 export const getLessons = async () => {

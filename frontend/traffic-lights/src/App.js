@@ -16,23 +16,24 @@ function App() {
     const [provideResponse, setProvideResponse] = useState({ question: {}, show: false });
 
     useEffect(() => {
-        const respond = question => {
+        const respond = data => {
             setProvideResponse({
-                ...question,
-                show: true
+                ...data.question,
+                show: true,
+                timer: data.timer
             });
 
             setTimeout(() => {
                 setProvideResponse({
                     question: {},
-                    show: false
+                    show: false,
                 });
-            }, 10000);
+            }, data.timer);
         };
 
         const handleNewQuestion = data => {
-            setLesson(data);
-            respond(data.questions[0]);
+            setLesson(data.lesson);
+            respond(data.lesson.questions[0], data.timer);
         }
 
         socket.on('new_question', handleNewQuestion);

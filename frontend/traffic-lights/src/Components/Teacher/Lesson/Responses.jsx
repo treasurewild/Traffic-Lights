@@ -1,8 +1,10 @@
 import green from '../../../Assets/Green.svg';
 import amber from '../../../Assets/Amber.svg';
 import red from '../../../Assets/Red.svg';
+import { socket } from '../../../socket';
+import { Button, Col, Row } from 'react-bootstrap';
 
-const Responses = ({ data }) => {
+const Responses = ({ lessonId, questionId, data }) => {
 
     const displayResponses = () => {
         // Sort responses to display Red-Amber-Green
@@ -23,10 +25,31 @@ const Responses = ({ data }) => {
         return display?.length > 0 ? display : <p className='text-muted'>No responses yet.</p>;
     }
 
+    const displayDate = () => {
+        const date = new Date(data.date)
+
+        return date.toLocaleTimeString('en-GB', { hour: "2-digit", minute: "2-digit" });;
+    }
+
+    const deleteResponsesHandler = () => {
+        socket.emit('delete_responses', { lessonId: lessonId, questionId: questionId, responsesId: data._id });
+    }
+
     return (
-        <div className='d-flex flex-row flex-wrap'>
-            {displayResponses()}
-        </div>
+        <>
+            <Row>
+                <Col md='9' className='d-flex flex-row flex-wrap'>
+                    {displayResponses()}
+                </Col>
+                <Col md='2'>
+                    <span className='text-muted'>Asked at: </span>{displayDate()}
+                </Col>
+                <Col>
+                    <Button size='sm' variant='outline-danger' onClick={deleteResponsesHandler}>Delete</Button>
+                </Col>
+            </Row>
+            <hr className='response-break' />
+        </>
     )
 }
 

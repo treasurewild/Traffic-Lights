@@ -7,6 +7,7 @@ import Lesson from './src/Models/Lesson.model.js'
 import mongoose from 'mongoose';
 import { config } from 'dotenv';
 import { users } from './src/Routes/Auth.route.js';
+import { pupil } from './src/Routes/Pupil.route.js';
 import { teacher } from './src/Routes/Teacher.route.js';
 
 config({ path: `.env.${process.env.NODE_ENV}` })
@@ -20,6 +21,7 @@ app.use(cors());
 const server = http.createServer(app);
 
 app.use('/users', users);
+app.use('/pupil', pupil);
 app.use('/teacher', teacher);
 
 const io = new Server(server, {
@@ -36,47 +38,24 @@ io.on('connection', socket => {
     });
 
     // Joining Lesson as a teacher
-    socket.on('join', async (lessonId, callback) => {
-        try {
-            let result = await Lesson.findOne({ shortId: lessonId })
-                .populate('questions');
-
-            if (!result) {
-                result = new Lesson({ shortId: lessonId })
-                result.save();
-            }
-
-            socket.join(lessonId);
-            socket.activeRoom = lessonId;
-
-            callback({
-                lesson: result,
-            });
-
-        } catch (e) {
-            console.error(e);
-        }
+    socket.on('join', lessonId => {
+        Lesson.findOne({ shortId: lessonId })
+            .then(lesson => {
+                socket.join(lessonId);
+                socket.activeRoom = lessonId;
+            })
+            .catch(e => {
+                console.error(e);
+            })
     });
 
     // Joining Lesson as a pupil
-    socket.on('pupil_join', async (lessonId, callback) => {
-        try {
-            let result = await Lesson.findOne({ shortId: lessonId })
-                .populate('questions');
+    socket.on('pupil_join', lessonId => {
+        socket.join(lessonId);
+        socket.activeRoom = lessonId;
+    })
 
-            socket.join(lessonId);
-            socket.activeRoom = lessonId;
-
-            callback({
-                lesson: result,
-            });
-
-        } catch (e) {
-            console.error(e);
-        }
-    });
-
-    socket.on('ask_question', async data => {
+    socket.on('ask_question', data => {
         const newQuestion = {
             text: data.question.text,
             responses: [{
@@ -84,7 +63,7 @@ io.on('connection', socket => {
                 responses: []
             }]
         };
-        await Lesson.findByIdAndUpdate(data._id, {
+        Lesson.findByIdAndUpdate(data._id, {
             $push: {
                 questions: {
                     $each: [newQuestion],
@@ -92,14 +71,13 @@ io.on('connection', socket => {
                 }
             }
         }, { new: true })
-            // .then(lesson => socket.to(lesson.shortId).emit('refresh_question', lesson.questions[0]))
             // Logging out of room issue, broadcasting for current testing
-            .then(lesson => socket.broadcast.emit('new_question', lesson))
+            .then(lesson => socket.broadcast.emit('new_question', { lesson: lesson, timer: data.timer }))
             .catch(err => console.log(err))
     });
 
-    socket.on('delete_question', async data => {
-        await Lesson.findById(data.lessonId)
+    socket.on('delete_question', data => {
+        Lesson.findById(data.lessonId)
             .then(lesson => {
                 lesson.questions.id(data.questionId).deleteOne();
                 lesson.save();
@@ -109,22 +87,36 @@ io.on('connection', socket => {
             .catch(err => console.log(err));
     });
 
-    socket.on('delete_lesson', async data => {
-        await Lesson.findByIdAndDelete(data.id);
-        // Do I need to keep sending this data? Should be stored in state and only sent again if GET request received?
-        const lessons = await Lesson.find({ teacher: data.teacher });
-
-        socket.emit('updated_lessons', lessons);
+    socket.on('delete_responses', data => {
+        Lesson.findById(data.lessonId)
+            .then(lesson => {
+                const question = lesson.questions.id(data.questionId);
+                question.responses.id(data.responsesId).deleteOne();
+                lesson.save();
+                socket.broadcast.emit('updated_lesson', lesson);
+                socket.emit('updated_lesson', lesson);
+            })
+            .catch(err => console.log(err));
     });
 
-    socket.on('fetch_lesson', async shortId => {
-        await Lesson.findOne({ shortId: shortId })
+    socket.on('delete_lesson', data => {
+        Lesson.findByIdAndDelete(data.id)
+            .then(() => {
+                Lesson.find({ teacher: data.teacher })
+                    .then(lessons => socket.emit('updated_lessons', lessons))
+                    .catch(err => console.log(err));
+            })
+            .catch(err => console.log(err))
+    });
+
+    socket.on('fetch_lesson', shortId => {
+        Lesson.findOne({ shortId: shortId })
             .then(lesson => socket.emit('updated_lesson', lesson))
             .catch(err => console.log(err));
     });
 
-    socket.on('pupil_response', async data => {
-        await Lesson.findById(data.lessonId)
+    socket.on('pupil_response', data => {
+        Lesson.findById(data.lessonId)
             .then(lesson => {
                 const question = lesson.questions.id(data.questionId);
                 question.responses[0].responses.push(data.response);
@@ -133,8 +125,8 @@ io.on('connection', socket => {
             .catch(err => console.log(err));
     });
 
-    socket.on('refresh_question', async data => {
-        await Lesson.findById(data.lessonId)
+    socket.on('refresh_question', data => {
+        Lesson.findById(data.lessonId)
             .then(lesson => {
                 const question = lesson.questions.id(data.questionId);
                 question.responses.unshift({
@@ -142,7 +134,7 @@ io.on('connection', socket => {
                     responses: []
                 });
                 lesson.save();
-                socket.broadcast.emit('refresh_question', question);
+                socket.broadcast.emit('refresh_question', { question: question, timer: data.timer });
                 //socket.to(lesson.shortId).emit('refresh_question', question);
             })
             .catch(err => console.log(err))
