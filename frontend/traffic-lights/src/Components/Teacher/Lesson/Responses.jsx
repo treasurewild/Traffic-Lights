@@ -22,7 +22,7 @@ const Responses = ({ lessonId, questionId, data }) => {
 
             return <div key='na'></div>
         });
-        return display?.length > 0 ? display : <p className='text-muted'>No responses yet.</p>;
+        return display?.length > 0 ? display : <p className='text-muted'>No responses given.</p>;
     }
 
     const displayDate = () => {
