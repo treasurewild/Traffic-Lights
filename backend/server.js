@@ -29,13 +29,25 @@ app.use('/teacher', teacher);
 
 const io = new Server(server, {
     cors: {
-        origin: 'http://localhost:3000'
+        origin: process.env.ORIGIN
+    },
+    connectionStateRecovery: {
+        // the backup duration of the sessions and the packets (2 minutes)
+        maxDisconnectionDuration: 2 * 60 * 1000,
+        // skip middlewares upon successful recovery
+        skipMiddlewares: true,
     }
 });
 
 // Creating socket and response criteria
 io.on('connection', socket => {
-    console.log('New user connected.');
+
+    if (socket.recovered) {
+        console.log('Session recovered')
+    } else {
+        // new or unrecoverable session
+        console.log('New user connected.');
+    }
 
     socket.on('disconnect', (reason) => {
         console.log(reason);

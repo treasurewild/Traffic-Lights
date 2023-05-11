@@ -33,10 +33,12 @@ function App() {
             socket.emit('fetch_lesson', lesson.shortId);
         };
 
+        socket.on('connect', () => { });
         socket.on('updated_lesson', data => setLesson(data));
         socket.on('refresh_question', respond);
 
         return () => {
+            socket.off('connect', () => { });
             socket.off('updated_lesson', data => setLesson(data));
             socket.off('refresh_question', respond);
         };
