@@ -1,8 +1,8 @@
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Routes, Route } from 'react-router-dom';
-import { socket } from './socket.js';
 import { useState, useEffect } from 'react';
+import { socket } from './socket';
 import Footer from './Components/Page/Footer';
 import Header from './Components/Page/Header';
 import Homepage from './Components/Homepage/Homepage';
@@ -40,7 +40,7 @@ function App() {
             socket.off('updated_lesson', data => setLesson(data));
             socket.off('refresh_question', respond);
         };
-    }, []);
+    }, [lesson.shortId]);
 
     return (
         <div>

@@ -5,7 +5,7 @@ import { socket } from '../../socket';
 import { getLesson, deleteLesson } from '../../Utils/lessonAPI';
 
 const LessonSummary = ({ lesson, setLesson, getLessonsHandler }) => {
-    const { learningObjective, subject, level, shortId, _id } = lesson;
+    const { learningObjective, classCode, subject, level, shortId, _id } = lesson;
 
     const navigate = useNavigate();
 
@@ -32,15 +32,16 @@ const LessonSummary = ({ lesson, setLesson, getLessonsHandler }) => {
         <>
             <Card className="m-1 lesson">
                 <Card.Header>
-                    {subject && <p>Subject: <strong>{subject}</strong></p>}
-                    {level && <p>Level: <strong>{level}</strong></p>}
+                    {subject && <p className='m-0'>Subject: <strong>{subject}</strong></p>}
+                    {classCode && <p className='m-0'>Class: <strong>{classCode}</strong></p>}
+                    {level && <p className='m-0'>Level: <strong>{level}</strong></p>}
                 </Card.Header>
                 <Card.Body>
                     <Card.Text>
                         {learningObjective}
                     </Card.Text>
                     <Button variant='primary' size='sm' onClick={chooseLesson}>Go to Lesson</Button>
-                    <Button variant='danger' size='sm' onClick={deleteLessonHandler}>Delete</Button>
+                    <Button className='ms-1' variant='danger' size='sm' onClick={deleteLessonHandler}>Delete</Button>
                 </Card.Body>
             </Card>
         </>
