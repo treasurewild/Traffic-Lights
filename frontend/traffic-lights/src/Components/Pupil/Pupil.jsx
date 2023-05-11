@@ -24,14 +24,14 @@ const Pupil = ({ lesson, provideResponse }) => {
 
         setAnswered({
             ...answered,
-            [provideResponse._id]: event.target.value
+            [provideResponse.questionId]: event.target.value
         })
 
         setTimeout(() => {
             setIsClicked(false)
         }, provideResponse.timer);
 
-        socket.emit('pupil_response', { response: event.target.value, questionId: provideResponse._id, lessonId: _id });
+        socket.emit('pupil_response', { response: event.target.value, questionId: provideResponse.questionId, lessonId: _id });
     }
 
     useEffect(() => {
@@ -40,11 +40,10 @@ const Pupil = ({ lesson, provideResponse }) => {
             navigate('/');
             return;
         }
-    }, [])
+    }, [lesson._id, navigate])
 
     return (
         <div className='main'>
-            <h2>Pupil Page</h2>
             <Row className='alert alert-info'>
                 <Col md='8'>
                     <h6 className='text-muted'>Learning Objective:</h6>
@@ -68,6 +67,7 @@ const Pupil = ({ lesson, provideResponse }) => {
                 </Modal.Header>
                 <Modal.Body>
                     <h3>{provideResponse.text}</h3>
+                    {isClicked && <span className='text-muted'>Thank you for your response.</span>}
                 </Modal.Body>
                 <Modal.Footer className='mx-auto'>
                     <Button className='m-1' variant='success' size='lg' value='1green' onClick={isClicked ? null : sendResponse} disabled={isClicked} >Green</Button>

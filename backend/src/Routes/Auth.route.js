@@ -50,7 +50,6 @@ router.post('/signin', (req, res) => {
             return res.status(500).send({ message: err })
         });
 
-
 });
 
 export { router as users };

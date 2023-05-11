@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { socket } from '../../../socket.js';
 import { Button, FloatingLabel, Form, ButtonGroup, DropdownButton, Dropdown } from 'react-bootstrap';
-import QuestionModel from '../../../Utils/QuestionModel.js';
 import spinner from '../../../Assets/Spinner.svg';
 
 const AskQuestion = ({ timer, setTimer, isLoading, setIsLoading, _id, shortId }) => {
@@ -13,10 +12,9 @@ const AskQuestion = ({ timer, setTimer, isLoading, setIsLoading, _id, shortId })
         setIsLoading(true);
         setCurrentQuestion(text);
 
-        const question = new QuestionModel(text);
-
         // Asks question and allows time for responses before fetching lesson data.
-        socket.timeout(timer).emit('ask_question', { _id: _id, question: question, timer: timer }, () => {
+
+        socket.timeout(timer).emit('ask_question', { _id: _id, question: text, timer: timer }, () => {
             setIsLoading(false);
             setCurrentQuestion('');
             socket.emit('fetch_lesson', shortId);

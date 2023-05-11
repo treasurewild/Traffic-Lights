@@ -1,8 +1,8 @@
 import green from '../../../Assets/Green.svg';
 import amber from '../../../Assets/Amber.svg';
 import red from '../../../Assets/Red.svg';
-import { socket } from '../../../socket';
 import { Button, Col, Row } from 'react-bootstrap';
+import { socket } from '../../../socket';
 
 const Responses = ({ lessonId, questionId, data }) => {
 
@@ -38,13 +38,13 @@ const Responses = ({ lessonId, questionId, data }) => {
     return (
         <>
             <Row>
-                <Col md='9' className='d-flex flex-row flex-wrap'>
+                <Col className='d-flex flex-row flex-wrap'>
                     {displayResponses()}
                 </Col>
-                <Col md='2'>
+                <Col sm='2'>
                     <span className='text-muted'>Asked at: </span>{displayDate()}
                 </Col>
-                <Col>
+                <Col sm='1'>
                     <Button size='sm' variant='outline-danger' onClick={deleteResponsesHandler}>Delete</Button>
                 </Col>
             </Row>
