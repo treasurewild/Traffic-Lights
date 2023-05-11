@@ -40,9 +40,9 @@ const ProvideResponse = ({ provideResponse, answered, setAnswered, lessonId }) =
                     <h3>{provideResponse.text}</h3>
                 </Modal.Body>
                 <Modal.Footer className='mx-auto'>
-                    <Button className='m-1' variant='success' size='lg' value='1green' onClick={isClicked ? null : sendResponse} disabled={isClicked} >Green</Button>
-                    <Button className='m-1' variant='warning' size='lg' value='2amber' onClick={isClicked ? null : sendResponse} disabled={isClicked} >Amber</Button>
-                    <Button className='m-1' variant='danger' size='lg' value='3red' onClick={isClicked ? null : sendResponse} disabled={isClicked} >Red</Button>
+                    <Button className='m-1' variant='success' size='lg' value='1green' onClick={isClicked ? null : sendResponse} >Green</Button>
+                    <Button className='m-1' variant='warning' size='lg' value='2amber' onClick={isClicked ? null : sendResponse} >Amber</Button>
+                    <Button className='m-1' variant='danger' size='lg' value='3red' onClick={isClicked ? null : sendResponse} >Red</Button>
                 </Modal.Footer>
             </Modal>
         </>

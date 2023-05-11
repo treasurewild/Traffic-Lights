@@ -4,6 +4,7 @@ import { Button, Row, Col } from 'react-bootstrap';
 import AskQuestion from './AskQuestion';
 import Questions from './Questions';
 import { socket } from '../../../socket';
+import Delete from '../../Page/Delete';
 
 const Lesson = ({ lesson }) => {
 
@@ -30,6 +31,7 @@ const Lesson = ({ lesson }) => {
             <Button className='m-1 align-self-center' variant='secondary' size='sm' onClick={() => navigate('/teacher')} >
                 &#60; Back to Lessons
             </Button>
+            <Delete />
 
             <Row className='alert alert-info'>
                 <Col md='6'>

@@ -4,10 +4,9 @@ import { Button } from 'react-bootstrap';
 import { getLessons } from '../../Utils/lessonAPI';
 import NewLesson from './NewLesson';
 
-const Teacher = ({ setLesson }) => {
+const Teacher = ({ lessons, setLessons, setLesson }) => {
 
     const user = JSON.parse(localStorage.getItem('user'));
-    const [lessons, setLessons] = useState([]);
     const [showAll, setShowAll] = useState(false);
     const [showCreateLesson, setShowCreateLesson] = useState(false);
 

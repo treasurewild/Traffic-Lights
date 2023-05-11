@@ -109,13 +109,11 @@ io.on('connection', socket => {
     });
 
     socket.on('delete_lesson', data => {
-        Lesson.findByIdAndDelete(data.id)
+        Lesson.findByIdAndDelete(data.lessonId)
             .then(() => {
-                Lesson.find({ teacher: data.teacher })
-                    .then(lessons => socket.emit('updated_lessons', lessons))
-                    .catch(err => console.log(err));
+                socket.emit('updated_lessons', data.lessonId);
             })
-            .catch(err => console.log(err))
+            .catch(err => console.log(err));
     });
 
     socket.on('fetch_lesson', shortId => {

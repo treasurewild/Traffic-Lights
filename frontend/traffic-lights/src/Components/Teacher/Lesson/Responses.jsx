@@ -1,6 +1,7 @@
 import green from '../../../Assets/Green.svg';
 import amber from '../../../Assets/Amber.svg';
 import red from '../../../Assets/Red.svg';
+import Delete from '../../Page/Delete';
 import { Button, Col, Row } from 'react-bootstrap';
 import { socket } from '../../../socket';
 
@@ -45,7 +46,7 @@ const Responses = ({ lessonId, questionId, data }) => {
                     <span className='text-muted'>Asked at: </span>{displayDate()}
                 </Col>
                 <Col sm='1'>
-                    <Button size='sm' variant='outline-danger' onClick={deleteResponsesHandler}>Delete</Button>
+                    <Delete lessonId={lessonId} questionId={questionId} responsesId={data._id} />
                 </Col>
             </Row>
             <hr className='response-break' />
