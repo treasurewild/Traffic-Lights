@@ -28,6 +28,7 @@ const AskQuestion = ({ timer, setTimer, isLoading, setIsLoading, _id, shortId })
             <Form onSubmit={askQuestion}>
                 <FloatingLabel controlId="ask-question" label="Question" className="mb-1">
                     <Form.Control
+                        autocomplete="off"
                         type="text"
                         placeholder='Ask a Question'
                         value={text}

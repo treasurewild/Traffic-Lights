@@ -18,17 +18,23 @@
     border-top: 2px solid black;
 }
 
+.demo-col {
+    height: 45vh;
+}
+
 .icon {
     width: 20px;
     height: 20px;
 }
 
 .lesson {
-    width: 15vw;
+    width: 220px;
 }
 
 .main {
     margin: auto;
+    padding-left: 10px;
+    padding-right: 10px;
     max-width: 1000px;
     margin-bottom: 50px;
 }

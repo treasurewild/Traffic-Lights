@@ -1,10 +1,6 @@
 import React from 'react'
-import { Button } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
 
 const Development = () => {
-
-    const navigate = useNavigate();
 
     return (
         <div className='alert alert-secondary'>
@@ -12,9 +8,6 @@ const Development = () => {
             <p><strong>Please don't add sensitive personal information!</strong></p>
             <p>It's created using the following technologies: ReactJS, Mongoose, Express, Node, Short-Unique-ID, and Socket.io.
                 <br />It uses Bootstrap and React Bootstrap for styling.</p>
-            <h5>Demo</h5>
-            <p>Unfortunately this app runs very slowly on Netlify/Render. I've created a mock version here so that you can see it in action:</p>
-            <Button className='mb-2' size='sm' onClick={() => navigate('/demo')}>See Demo</Button>
             <h5>Where next?</h5>
             <p>The initial concept for this app seemed quite simple, but once I got stuck in I realised how many directions it could go, and how many other tools could be added to increase it's functionality. I've probably reached the end of that in terms of the learning payoff at this point, but here are some features that would make it much more useful:</p>
             <ul>

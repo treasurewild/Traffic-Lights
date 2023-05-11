@@ -49,7 +49,7 @@ const Homepage = ({ setLesson, setLessons }) => {
                 <Form onSubmit={joinLessonPupil}>
                     <h3>Pupil</h3>
                     <FloatingLabel controlId="pupil" label="Lesson Code" className="mb-1">
-                        <Form.Control type='text' placeholder='Enter lesson code...' onChange={e => setPupilLesson(e.target.value)} required />
+                        <Form.Control autocomplete="off" type='text' placeholder='Enter lesson code...' onChange={e => setPupilLesson(e.target.value)} required />
                     </FloatingLabel>
                     <Button className='mt-1 btn-success' type='submit'>
                         Join Lesson
