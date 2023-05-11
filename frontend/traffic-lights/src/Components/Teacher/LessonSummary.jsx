@@ -1,4 +1,4 @@
-import React from 'react';
+import Delete from '../Page/Delete';
 import { Card, Button } from 'react-bootstrap';
 import { useNavigate } from 'react-router-dom';
 import { socket } from '../../socket';
@@ -41,7 +41,7 @@ const LessonSummary = ({ lesson, setLesson, getLessonsHandler }) => {
                         {learningObjective}
                     </Card.Text>
                     <Button variant='primary' size='sm' onClick={chooseLesson}>Go to Lesson</Button>
-                    <Button className='ms-1' variant='danger' size='sm' onClick={deleteLessonHandler}>Delete</Button>
+                    <Delete lessonId={_id} />
                 </Card.Body>
             </Card>
         </>

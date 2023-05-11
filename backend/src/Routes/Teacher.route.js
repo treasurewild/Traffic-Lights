@@ -33,11 +33,11 @@ router.post('/new-lesson', [verifyToken],
             .catch(err => res.status(400).send(err));
     });
 
-router.put('/delete-lesson', [verifyToken],
-    (req, res) => {
-        Lesson.findByIdAndDelete(req.body.lessonId)
-            .then(() => res.status(200).send())
-            .catch(err => res.status(400).send(err));
-    })
+// router.put('/delete-lesson', [verifyToken],
+//     (req, res) => {
+//         Lesson.findByIdAndDelete(req.body.lessonId)
+//             .then(() => res.status(200).send())
+//             .catch(err => res.status(400).send(err));
+//     })
 
 export { router as teacher };

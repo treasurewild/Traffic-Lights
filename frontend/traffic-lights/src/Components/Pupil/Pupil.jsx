@@ -1,8 +1,10 @@
+
+import ProvideResponse from './ProvideResponse.jsx';
 import Questions from './Questions.jsx';
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { socket } from '../../socket';
-import { Button, Modal, Row, Col } from 'react-bootstrap';
+import { Button, Row, Col } from 'react-bootstrap';
 
 const Pupil = ({ lesson, provideResponse }) => {
     const navigate = useNavigate();
@@ -11,28 +13,28 @@ const Pupil = ({ lesson, provideResponse }) => {
 
     // Keeps a record of pupil responses to questions as Key-Value pairs.
     const [answered, setAnswered] = useState({});
-    const [isClicked, setIsClicked] = useState(false);
+    // const [isClicked, setIsClicked] = useState(false);
 
     const refreshLesson = () => {
         socket.emit('fetch_lesson', shortId);
     }
 
-    const sendResponse = (event) => {
-        event.preventDefault();
+    // const sendResponse = (event) => {
+    //     event.preventDefault();
 
-        setIsClicked(true);
+    //     setIsClicked(true);
 
-        setAnswered({
-            ...answered,
-            [provideResponse.questionId]: event.target.value
-        })
+    //     setAnswered({
+    //         ...answered,
+    //         [provideResponse.questionId]: event.target.value
+    //     })
 
-        setTimeout(() => {
-            setIsClicked(false)
-        }, provideResponse.timer);
+    //     setTimeout(() => {
+    //         setIsClicked(false)
+    //     }, provideResponse.timer);
 
-        socket.emit('pupil_response', { response: event.target.value, questionId: provideResponse.questionId, lessonId: _id });
-    }
+    //     socket.emit('pupil_response', { response: event.target.value, questionId: provideResponse.questionId, lessonId: _id });
+    // }
 
     useEffect(() => {
         // Redirects to homepage if no lesson data available
@@ -54,8 +56,8 @@ const Pupil = ({ lesson, provideResponse }) => {
 
             <Button type='button' size='sm' variant='secondary' onClick={refreshLesson}>Refresh Lesson Data</Button>
             <Questions questions={questions} answered={answered} />
-
-            <Modal
+            {provideResponse.show && <ProvideResponse provideResponse={provideResponse} answered={answered} setAnswered={setAnswered} lessonId={_id} />}
+            {/* <Modal
                 show={provideResponse.show}
                 backdrop="static"
                 keyboard={false} // Prevents ability to close modal by pressing Esc
@@ -74,7 +76,7 @@ const Pupil = ({ lesson, provideResponse }) => {
                     <Button className='m-1' variant='warning' size='lg' value='2amber' onClick={isClicked ? null : sendResponse} disabled={isClicked} >Amber</Button>
                     <Button className='m-1' variant='danger' size='lg' value='3red' onClick={isClicked ? null : sendResponse} disabled={isClicked} >Red</Button>
                 </Modal.Footer>
-            </Modal>
+            </Modal> */}
 
         </div>
     )

@@ -21,8 +21,9 @@ You'll need to open a terminal and:
 * navigate to ```/frontend/traffic-lights``` and run ```npm i``` 
 
 #### Environment
-* You need MongoDB installed (or use MongoDBAtlas) and you'll need to create files for ```.env.development```, ```.env.production``` and ```.env.test``` in the ```/backend``` folder pointing at your database and the PORT you want to use.
-* You need a .env file in the ```/frontend/traffic-lights``` pointing to your backend PORT
+* You need MongoDB installed (or use MongoDBAtlas) and you'll need to create files for ```.env.development```, ```.env.production``` and ```.env.test``` in the ```/backend``` folder pointing at your database, the PORT you want to use, and the front end address that requests will come from (for CORS).
+* You need a .env file in the ```/frontend/traffic-lights``` pointing to your backend PORT.
+* You will also need to change the URL in ```socket.js``` on the frontend.
 
 #### Running
 You'll need two terminals open.

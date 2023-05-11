@@ -19,7 +19,7 @@ const Homepage = ({ setLesson, setLessons }) => {
 
         e.preventDefault();
 
-        const res = await getLessonPupil(pupilLesson);
+        const res = await getLessonPupil(pupilLesson.toUpperCase()); // Lesson codes are all upper case for readability
 
         if (res.status === 200) {
             setLesson(res.lesson);
@@ -49,7 +49,7 @@ const Homepage = ({ setLesson, setLessons }) => {
                 <Form onSubmit={joinLessonPupil}>
                     <h3>Pupil</h3>
                     <FloatingLabel controlId="pupil" label="Lesson Code" className="mb-1">
-                        <Form.Control autocomplete="off" type='text' placeholder='Enter lesson code...' onChange={e => setPupilLesson(e.target.value)} required />
+                        <Form.Control autoComplete="off" type='text' placeholder='Enter lesson code...' onChange={e => setPupilLesson(e.target.value)} required />
                     </FloatingLabel>
                     <Button className='mt-1 btn-success' type='submit'>
                         Join Lesson

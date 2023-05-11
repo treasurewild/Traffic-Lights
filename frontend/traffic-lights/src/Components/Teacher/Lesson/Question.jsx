@@ -1,4 +1,5 @@
 import Responses from './Responses';
+import Delete from '../../Page/Delete';
 import { Button } from 'react-bootstrap';
 import { socket } from '../../../socket';
 import spinner from '../../../Assets/Spinner.svg';
@@ -7,10 +8,6 @@ const Question = ({ timer, isLoading, setIsLoading, lesson, question }) => {
     const { _id, shortId } = lesson;
 
     const { text, responses } = question;
-
-    const deleteQuestion = () => {
-        socket.emit('delete_question', { lessonId: _id, questionId: question._id });
-    }
 
     const askAgain = (e) => {
         e.preventDefault();
@@ -51,9 +48,7 @@ const Question = ({ timer, isLoading, setIsLoading, lesson, question }) => {
                     'Ask Again'
                 }
             </Button>
-            <Button className='m-1 align-self-center' variant='danger' size='sm' onClick={deleteQuestion}>
-                Delete
-            </Button>
+            <Delete lessonId={_id} questionId={question._id} />
         </div>
     )
 }

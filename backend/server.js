@@ -29,13 +29,25 @@ app.use('/teacher', teacher);
 
 const io = new Server(server, {
     cors: {
-        origin: 'http://localhost:3000'
+        origin: process.env.ORIGIN
+    },
+    connectionStateRecovery: {
+        // the backup duration of the sessions and the packets (2 minutes)
+        maxDisconnectionDuration: 2 * 60 * 1000,
+        // skip middlewares upon successful recovery
+        skipMiddlewares: true,
     }
 });
 
 // Creating socket and response criteria
 io.on('connection', socket => {
-    console.log('New user connected.');
+
+    if (socket.recovered) {
+        console.log('Session recovered')
+    } else {
+        // new or unrecoverable session
+        console.log('New user connected.');
+    }
 
     socket.on('disconnect', (reason) => {
         console.log(reason);
@@ -71,17 +83,6 @@ io.on('connection', socket => {
                 socket.to(lesson.shortId).emit('refresh_question', { text: data.question, questionId: lesson.questions[0]._id, timer: data.timer });
             })
             .catch(err => console.log(err))
-
-        // Lesson.findByIdAndUpdate(data._id, {
-        //     $push: {
-        //         questions: {
-        //             $each: [newQuestion],
-        //             $position: 0
-        //         }
-        //     }
-        // }, { new: true })
-        //.then(lesson => socket.to(lesson.shortId).emit('new_question', { lesson: lesson, timer: data.timer }))
-        //.catch(err => console.log(err))
     });
 
     socket.on('delete_question', data => {
@@ -108,13 +109,11 @@ io.on('connection', socket => {
     });
 
     socket.on('delete_lesson', data => {
-        Lesson.findByIdAndDelete(data.id)
+        Lesson.findByIdAndDelete(data.lessonId)
             .then(() => {
-                Lesson.find({ teacher: data.teacher })
-                    .then(lessons => socket.emit('updated_lessons', lessons))
-                    .catch(err => console.log(err));
+                socket.emit('updated_lessons', data.lessonId);
             })
-            .catch(err => console.log(err))
+            .catch(err => console.log(err));
     });
 
     socket.on('fetch_lesson', shortId => {

@@ -13,6 +13,7 @@ import Lesson from './Components/Teacher/Lesson/Lesson';
 function App() {
 
     const [lesson, setLesson] = useState({});
+    const [lessons, setLessons] = useState([]);
     const [provideResponse, setProvideResponse] = useState({ question: {}, show: false });
 
     useEffect(() => {
@@ -33,11 +34,21 @@ function App() {
             socket.emit('fetch_lesson', lesson.shortId);
         };
 
+        const updateLessons = id => {
+            setLessons(
+                lessons.filter((value => { return value._id !== id }))
+            )
+        }
+
+        socket.on('connect', () => { });
         socket.on('updated_lesson', data => setLesson(data));
+        socket.on('updated_lessons', updateLessons);
         socket.on('refresh_question', respond);
 
         return () => {
+            socket.off('connect', () => { });
             socket.off('updated_lesson', data => setLesson(data));
+            socket.off('updated_lessons', updateLessons);
             socket.off('refresh_question', respond);
         };
     }, [lesson.shortId]);
@@ -47,7 +58,7 @@ function App() {
             <Header />
             <Routes>
                 <Route path='/' element={<Homepage setLesson={setLesson} />} />
-                <Route path='/teacher' element={<Teacher setLesson={setLesson} />} />
+                <Route path='/teacher' element={<Teacher lessons={lessons} setLessons={setLessons} setLesson={setLesson} />} />
                 <Route path='/pupil/:id' element={<Pupil lesson={lesson} setLesson={setLesson} provideResponse={provideResponse} />} />
                 <Route path='/teacher/lesson/:id' element={<Lesson lesson={lesson} />} />
             </Routes>
