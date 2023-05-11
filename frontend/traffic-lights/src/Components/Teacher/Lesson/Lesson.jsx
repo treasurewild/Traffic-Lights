@@ -11,9 +11,18 @@ const Lesson = ({ lesson }) => {
     const { shortId, _id, learningObjective, classCode, subject } = lesson;
     const [isLoading, setIsLoading] = useState(false);
     const [timer, setTimer] = useState(10000);
+    const [copied, setCopied] = useState(false);
 
     const refreshLesson = () => {
         socket.emit('fetch_lesson', shortId);
+    }
+
+    const handleClick = () => {
+        setCopied(true);
+        navigator.clipboard.writeText(`${shortId}`);
+        setTimeout(() => {
+            setCopied(false);
+        }, 3000);
     }
 
     return (
@@ -32,8 +41,8 @@ const Lesson = ({ lesson }) => {
                 </Col>
                 <Col >
                     <h5 className='alert alert-light'>
-                        Class code: &#160;
-                        <Button size='lg' variant='secondary' onClick={() => navigator.clipboard.writeText(`${shortId}`)}>{shortId}</Button>
+                        Class code:&nbsp;
+                        <Button size='lg' variant='secondary' onClick={() => handleClick()}>{copied ? 'Copied' : `${shortId}`}</Button>
                     </h5>
                 </Col>
             </Row>

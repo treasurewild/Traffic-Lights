@@ -83,17 +83,6 @@ io.on('connection', socket => {
                 socket.to(lesson.shortId).emit('refresh_question', { text: data.question, questionId: lesson.questions[0]._id, timer: data.timer });
             })
             .catch(err => console.log(err))
-
-        // Lesson.findByIdAndUpdate(data._id, {
-        //     $push: {
-        //         questions: {
-        //             $each: [newQuestion],
-        //             $position: 0
-        //         }
-        //     }
-        // }, { new: true })
-        //.then(lesson => socket.to(lesson.shortId).emit('new_question', { lesson: lesson, timer: data.timer }))
-        //.catch(err => console.log(err))
     });
 
     socket.on('delete_question', data => {
